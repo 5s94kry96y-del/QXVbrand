@@ -161,7 +161,6 @@
             top: 65px;
         }
 
-        /* QXV va BRAND o'rin almashtirish klassi */
         .title-container.swapped .text-qxv {
             top: 55px;
             font-size: 1.8rem;
@@ -322,8 +321,8 @@
 
         .footer-note {
             text-align: right;
-            font-size: 9px;
-            color: #666;
+            font-size: 10px;
+            color: #888;
             margin-top: 20px;
             padding-bottom: 20px;
         }
@@ -421,25 +420,30 @@
             <div class="meaning-result" id="meaning-output">Ism ma'nosini bilish uchun qidiruvdan foydalaning.</div>
         </div>
 
-        <!-- Eng Pastki HAQIQIY Nasheedlar -->
+        <!-- Eng Pastki Nasheedlar -->
         <div class="card">
-            <div style="font-weight: bold; color: #d4af37; margin-bottom: 12px; text-align: center;">Haqiqiy Sara Nasheedlar</div>
+            <div style="font-weight: bold; color: #d4af37; margin-bottom: 12px; text-align: center;">Sara Nasheedlar</div>
             <div class="audio-group">
                 <button class="action-btn" style="background: linear-gradient(135deg, #d4af37, #f39c12); color:#000;" onclick="playAudio('fiyahubbun-audio')">NASHEED: FIYA HUBBUN</button>
-                <button class="action-btn" style="background: linear-gradient(135deg, #eb3b5a, #fa8231); color:#fff;" onclick="playAudio('allahuyalamu-audio')">NASHEED: ALLAHU YA'LAMU MA FI QALBI</button>
+                <button class="action-btn" style="background: linear-gradient(135deg, #eb3b5a, #fa8231); color:#fff;" onclick="playAudio('allahuyalamu-audio')">NASHEED: ALLAHU YA'LAMU</button>
             </div>
         </div>
 
-        <div class="footer-note">Manfaatimiz tegsa xursandmiz — Qobiljonov Xojiakbar</div>
+        <div class="footer-note">Siz uchun manfaatlik bo'lsa biz xursandmiz — Qobiljonov Xojiakbar</div>
 
     </div>
 
     <!-- AUDIO MANBALARI -->
     <audio id="yasin-audio" src="https://server8.mp3quran.net/afs/036.mp3" preload="auto"></audio>
     <audio id="tabarak-audio" src="https://server8.mp3quran.net/afs/067.mp3" preload="auto"></audio>
-    <!-- Haqiqiy Ishonchli Nasheed Manbalari -->
-    <audio id="fiyahubbun-audio" src="https://download.quranicaudio.com/nasheed/fi_yahubbun.mp3" preload="auto"></audio>
-    <audio id="allahuyalamu-audio" src="https://download.quranicaudio.com/nasheed/allahu_yalamu.mp3" preload="auto"></audio>
+
+    <!--
+      NASHEED FAYLLARI: Loyihangiz joylashgan papkaga ushbu 2 ta faylni yuklab qo'ysangiz 100% kafolat bilan chaladi:
+      1. fi_yahubbun.mp3
+      2. allahu_yalamu.mp3
+    -->
+    <audio id="fiyahubbun-audio" src="fi_yahubbun.mp3" preload="auto"></audio>
+    <audio id="allahuyalamu-audio" src="allahu_yalamu.mp3" preload="auto"></audio>
 
     <script>
         const doorLeft = document.getElementById('door-left');
@@ -447,13 +451,13 @@
         const numFly = document.getElementById('num-fly');
         const titleBox = document.getElementById('title-box');
 
-        // 1-soniya ichida qora eshiklar tezda ochiladi
+        // 1 soniya ichida qora eshiklar tezda ochiladi
         setTimeout(() => {
             doorLeft.style.transform = 'translateX(-100%)';
             doorRight.style.transform = 'translateX(100%)';
         }, 100);
 
-        // 6 Soniyalik sanoq
+        // Aniq 6 soniyalik sanoq
         let count = 6;
         const numTimer = setInterval(() => {
             count--;
