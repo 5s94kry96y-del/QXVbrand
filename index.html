@@ -1,1 +1,192 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azon Vaqtlari - QXV</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+        body {
+            background-color: #0d0d0d;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            width: 100%;
+            max-width: 400px;
+            background: #1a1a1a;
+            border: 1px solid #d4af37;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.15);
+            text-align: center;
+        }
+        h1 {
+            color: #d4af37;
+            font-size: 24px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .location {
+            color: #a0a0a0;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        .prayer-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .prayer-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #262626;
+            padding: 14px 18px;
+            border-radius: 10px;
+            border-left: 4px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .prayer-card.active {
+            border-left-color: #d4af37;
+            background: #332b12;
+        }
+        .prayer-name {
+            font-size: 16px;
+            font-weight: 600;
+        }
+        .prayer-time {
+            font-size: 16px;
+            color: #d4af37;
+            font-weight: 700;
+        }
+        .enable-btn {
+            background: linear-gradient(135deg, #d4af37, #aa820a);
+            color: #000;
+            border: none;
+            width: 100%;
+            padding: 14px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 15px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+        .enable-btn:active {
+            transform: scale(0.98);
+        }
+        .status {
+            margin-top: 15px;
+            font-size: 12px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
 
+<div class="container">
+    <h1>Azon Vaqtlari</h1>
+    <div class="location" id="city-name">Toshkent shahri</div>
+
+    <div class="prayer-list">
+        <div class="prayer-card" id="card-Fajr">
+            <span class="prayer-name">Bomdod</span>
+            <span class="prayer-time" id="time-Fajr">--:--</span>
+        </div>
+        <div class="prayer-card" id="card-Dhuhr">
+            <span class="prayer-name">Peshin</span>
+            <span class="prayer-time" id="time-Dhuhr">--:--</span>
+        </div>
+        <div class="prayer-card" id="card-Asr">
+            <span class="prayer-name">Asr</span>
+            <span class="prayer-time" id="time-Asr">--:--</span>
+        </div>
+        <div class="prayer-card" id="card-Maghrib">
+            <span class="prayer-name">Shom</span>
+            <span class="prayer-time" id="time-Maghrib">--:--</span>
+        </div>
+        <div class="prayer-card" id="card-Isha">
+            <span class="prayer-name">Xufton</span>
+            <span class="prayer-time" id="time-Isha">--:--</span>
+        </div>
+    </div>
+
+    <button class="enable-btn" onclick="enableAudio()">Ovozni va azonni yoqish</button>
+    <div class="status" id="status-text">Azon aytilishi uchun tugmani bir marta bosing</div>
+</div>
+
+<audio id="azanaudio" src="https://cdn.islamic.network/quran/audio/128/ar.alafasy/1.mp3" preload="auto"></audio>
+
+<script>
+    let timesData = {};
+    let audioEnabled = false;
+
+    // Toshkent vaqtini API orqali yuklash
+    async function fetchPrayerTimes() {
+        try {
+            const res = await fetch('https://api.aladhan.com/v1/timingsByCity?city=Tashkent&country=Uzbekistan&method=3');
+            const data = await res.json();
+            timesData = data.data.timings;
+            
+            document.getElementById('time-Fajr').innerText = timesData.Fajr;
+            document.getElementById('time-Dhuhr').innerText = timesData.Dhuhr;
+            document.getElementById('time-Asr').innerText = timesData.Asr;
+            document.getElementById('time-Maghrib').innerText = timesData.Maghrib;
+            document.getElementById('time-Isha').innerText = timesData.Isha;
+        } catch (e) {
+            document.getElementById('status-text').innerText = "Vaqtlarni yuklashda xatolik;";
+        }
+    }
+
+    function enableAudio() {
+        const audio = document.getElementById('azanaudio');
+        audio.play().then(() => {
+            audio.pause();
+            audio.currentTime = 0;
+            audioEnabled = true;
+            document.getElementById('status-text').innerText = "Ovoz aktivlashtirildi. Sahifani yopmang.";
+            document.querySelector('.enable-btn').style.background = "#2e7d32";
+            document.querySelector('.enable-btn').style.color = "#ffffff";
+            document.querySelector('.enable-btn').innerText = "Ovoz va azon yoqildi ✓";
+        }).catch(err => {
+            console.log(err);
+        });
+    }
+
+    // Har 10 sekunda vaqtni tekshirish
+    setInterval(() => {
+        const now = new Date();
+        const currentHM = now.toTimeString().substring(0, 5);
+
+        const prayers = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+        
+        prayers.forEach(p => {
+            if (timesData[p] === currentHM) {
+                document.getElementById(`card-${p}`).classList.add('active');
+                if (audioEnabled) {
+                    const audio = document.getElementById('azanaudio');
+                    audio.play();
+                }
+            } else {
+                document.getElementById(`card-${p}`).classList.remove('active');
+            }
+        });
+    }, 10000);
+
+    fetchPrayerTimes();
+</script>
+
+</body>
+</html>
