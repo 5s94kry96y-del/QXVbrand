@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QXVbrand - Premium Namoz Vaqtlari & Ismlar Lug'ati</title>
+    <title>QXV BRAND - Premium Islomiy Portal</title>
     <style>
         * {
             box-sizing: border-box;
@@ -13,26 +13,34 @@
         }
 
         body {
-            background: #080808;
+            background: #050505;
             color: #ffffff;
             min-height: 100vh;
             overflow-x: hidden;
             position: relative;
         }
 
-        /* Orqa fondagi effektlar */
-        .sun-bg {
+        /* Emotsional Qimirlovchi Orqa Fon Nur Effekti */
+        .animated-bg {
             position: fixed;
-            top: -100px;
-            right: -100px;
-            width: 350px;
-            height: 350px;
-            background: radial-gradient(circle, rgba(212, 175, 55, 0.25) 0%, rgba(0,0,0,0) 70%);
+            top: -150px;
+            right: -150px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.35) 0%, rgba(0,0,0,0) 70%);
             border-radius: 50%;
             pointer-events: none;
             z-index: 1;
+            animation: pulseGlow 6s ease-in-out infinite alternate;
         }
 
+        @keyframes pulseGlow {
+            0% { transform: scale(1) translate(0, 0); opacity: 0.6; }
+            50% { transform: scale(1.3) translate(-30px, 40px); opacity: 0.9; }
+            100% { transform: scale(1.1) translate(20px, -20px); opacity: 0.7; }
+        }
+
+        /* Dynamic Rain & Snow */
         .rain-container, .snow-container {
             position: fixed;
             top: 0;
@@ -46,16 +54,16 @@
 
         .drop {
             position: absolute;
-            background: linear-gradient(transparent, rgba(212, 175, 55, 0.4));
-            width: 1px;
-            height: 35px;
-            opacity: 0.5;
-            animation: fall 1s linear infinite;
+            background: linear-gradient(transparent, rgba(212, 175, 55, 0.6));
+            width: 1.5px;
+            height: 40px;
+            opacity: 0.6;
+            animation: fall 0.8s linear infinite;
         }
 
         @keyframes fall {
-            0% { transform: translateY(-50px); }
-            100% { transform: translateY(100vh); }
+            0% { transform: translateY(-50px) rotate(10deg); }
+            100% { transform: translateY(100vh) rotate(10deg); }
         }
 
         .flake {
@@ -68,10 +76,10 @@
 
         @keyframes snowfall {
             0% { transform: translateY(-10px) translateX(0); }
-            100% { transform: translateY(100vh) translateX(20px); }
+            100% { transform: translateY(100vh) translateX(25px); }
         }
 
-        /* ESHIK SPLASH SCREEN */
+        /* SPLASH SCREEN & FAST DOOR (1 SONIYADA OCHILADI) */
         #door-splash {
             position: fixed;
             top: 0;
@@ -91,10 +99,10 @@
             top: 0;
             width: 50%;
             height: 100%;
-            background: #050505;
+            background: #080808;
             border: 2px solid #d4af37;
             box-shadow: inset 0 0 100px rgba(0,0,0,1);
-            transition: transform 0.8s cubic-bezier(0.85, 0, 0.15, 1);
+            transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1);
             z-index: 10;
         }
 
@@ -118,66 +126,65 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            height: 200px;
         }
 
-        /* QXVbrand harflari sochilib yig'ilishi */
-        .brand-scatter {
+        /* QXV va BRAND Almashtirish Konteyneri */
+        .title-container {
             display: flex;
-            gap: 5px;
-            font-size: 3.5rem;
-            font-weight: 900;
-            letter-spacing: 4px;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            height: 110px;
+            justify-content: center;
         }
 
-        .brand-char {
-            display: inline-block;
+        .text-qxv {
+            font-size: 3.8rem;
+            font-weight: 900;
+            letter-spacing: 6px;
             background: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            opacity: 0;
-            animation: assembleChar 0.8s forwards;
+            transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: absolute;
+            top: 0;
         }
 
-        .brand-char:nth-child(1) { transform: translate(-200px, -200px) rotate(-180deg); animation-delay: 0.2s; }
-        .brand-char:nth-child(2) { transform: translate(200px, -150px) rotate(180deg); animation-delay: 0.3s; }
-        .brand-char:nth-child(3) { transform: translate(-150px, 200px) rotate(-90deg); animation-delay: 0.4s; }
-        .brand-char:nth-child(4) { transform: translate(180px, 180px) rotate(90deg); animation-delay: 0.5s; }
-        .brand-char:nth-child(5) { transform: translate(-220px, 0px) rotate(-360deg); animation-delay: 0.6s; }
-        .brand-char:nth-child(6) { transform: translate(0px, -250px) rotate(180deg); animation-delay: 0.7s; }
-        .brand-char:nth-child(7) { transform: translate(220px, 0px) rotate(-180deg); animation-delay: 0.8s; }
-        .brand-char:nth-child(8) { transform: translate(0px, 250px) rotate(360deg); animation-delay: 0.9s; }
+        .text-brand {
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: 10px;
+            color: #d4af37;
+            transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: absolute;
+            top: 65px;
+        }
 
-        @keyframes assembleChar {
-            to {
-                opacity: 1;
-                transform: translate(0, 0) rotate(0deg);
-            }
+        /* QXV va BRAND o'rin almashtirish klassi */
+        .title-container.swapped .text-qxv {
+            top: 55px;
+            font-size: 1.8rem;
+        }
+
+        .title-container.swapped .text-brand {
+            top: 0px;
+            font-size: 3.2rem;
         }
 
         .welcome-text {
-            font-size: 1.2rem;
-            color: #d4af37;
-            margin-top: 15px;
-            letter-spacing: 2px;
-            opacity: 0;
-            animation: fadeIn 1s forwards 1.2s;
+            font-size: 1.1rem;
+            color: #aaa;
+            margin-top: 10px;
+            letter-spacing: 3px;
         }
 
         .num-fly {
-            font-size: 4.5rem;
+            font-size: 4rem;
             font-weight: bold;
             color: #ffffff;
-            text-shadow: 0 0 25px #d4af37;
-            margin-top: 15px;
-            opacity: 0;
-            animation: flyNum 0.5s forwards 1.4s;
-        }
-
-        @keyframes fadeIn { to { opacity: 1; } }
-
-        @keyframes flyNum {
-            0% { opacity: 0; transform: scale(2); }
-            100% { opacity: 1; transform: scale(1); }
+            text-shadow: 0 0 20px #d4af37;
+            margin-top: 10px;
         }
 
         /* Asosiy Kontent */
@@ -324,7 +331,7 @@
 </head>
 <body>
 
-    <div class="sun-bg"></div>
+    <div class="animated-bg"></div>
     <div class="rain-container" id="rain"></div>
 
     <!-- SPLASH SCREEN -->
@@ -334,27 +341,21 @@
         <div class="snow-container" id="splash-snow"></div>
 
         <div class="splash-content">
-            <div class="brand-scatter">
-                <span class="brand-char">Q</span>
-                <span class="brand-char">X</span>
-                <span class="brand-char">V</span>
-                <span class="brand-char">b</span>
-                <span class="brand-char">r</span>
-                <span class="brand-char">a</span>
-                <span class="brand-char">n</span>
-                <span class="brand-char">d</span>
+            <div class="title-container" id="title-box">
+                <div class="text-qxv">QXV</div>
+                <div class="text-brand">BRAND</div>
             </div>
             <div class="welcome-text">XUSH KELIBSIZ</div>
-            <div class="num-fly" id="num-fly">10</div>
+            <div class="num-fly" id="num-fly">6</div>
         </div>
     </div>
 
     <!-- ASOSIY KONTENT -->
     <div class="main-content" id="main-content">
         
-        <!-- Yuqori audio pleyerlar -->
+        <!-- Yuqori Al-Afasy Suralari -->
         <div class="card">
-            <div class="brand-header">QXVbrand</div>
+            <div class="brand-header">QXV BRAND</div>
             <div class="live-clock" id="live-clock">Sana va Soat yuklanmoqda...</div>
             
             <div class="audio-group">
@@ -420,12 +421,12 @@
             <div class="meaning-result" id="meaning-output">Ism ma'nosini bilish uchun qidiruvdan foydalaning.</div>
         </div>
 
-        <!-- Pastki Nasheedlar pleyeri -->
+        <!-- Eng Pastki HAQIQIY Nasheedlar -->
         <div class="card">
-            <div style="font-weight: bold; color: #d4af37; margin-bottom: 12px; text-align: center;">Tavsiya Etilgan Nasheedlar</div>
+            <div style="font-weight: bold; color: #d4af37; margin-bottom: 12px; text-align: center;">Haqiqiy Sara Nasheedlar</div>
             <div class="audio-group">
                 <button class="action-btn" style="background: linear-gradient(135deg, #d4af37, #f39c12); color:#000;" onclick="playAudio('fiyahubbun-audio')">NASHEED: FIYA HUBBUN</button>
-                <button class="action-btn" style="background: linear-gradient(135deg, #e74c3c, #c0392b); color:#fff;" onclick="playAudio('allahuyalamu-audio')">NASHEED: ALLAHU YA'LAMU</button>
+                <button class="action-btn" style="background: linear-gradient(135deg, #eb3b5a, #fa8231); color:#fff;" onclick="playAudio('allahuyalamu-audio')">NASHEED: ALLAHU YA'LAMU MA FI QALBI</button>
             </div>
         </div>
 
@@ -436,24 +437,32 @@
     <!-- AUDIO MANBALARI -->
     <audio id="yasin-audio" src="https://server8.mp3quran.net/afs/036.mp3" preload="auto"></audio>
     <audio id="tabarak-audio" src="https://server8.mp3quran.net/afs/067.mp3" preload="auto"></audio>
-    <audio id="fiyahubbun-audio" src="https://cdn.islamic.network/quran/audio/128/ar.alafasy/1.mp3" preload="auto"></audio>
-    <audio id="allahuyalamu-audio" src="https://server8.mp3quran.net/afs/001.mp3" preload="auto"></audio>
+    <!-- Haqiqiy Ishonchli Nasheed Manbalari -->
+    <audio id="fiyahubbun-audio" src="https://download.quranicaudio.com/nasheed/fi_yahubbun.mp3" preload="auto"></audio>
+    <audio id="allahuyalamu-audio" src="https://download.quranicaudio.com/nasheed/allahu_yalamu.mp3" preload="auto"></audio>
 
     <script>
-        // Kirishda eshiklar tezda ochilishi
         const doorLeft = document.getElementById('door-left');
         const doorRight = document.getElementById('door-right');
         const numFly = document.getElementById('num-fly');
+        const titleBox = document.getElementById('title-box');
 
+        // 1-soniya ichida qora eshiklar tezda ochiladi
         setTimeout(() => {
             doorLeft.style.transform = 'translateX(-100%)';
             doorRight.style.transform = 'translateX(100%)';
-        }, 300);
+        }, 100);
 
-        // 10 soniyalik sanoq (10-9-8-7-6-5-4-3-2-1)
-        let count = 10;
+        // 6 Soniyalik sanoq
+        let count = 6;
         const numTimer = setInterval(() => {
             count--;
+            
+            // 3 soniya qolganda QXV va BRAND o'rin almashtiradi
+            if (count === 3) {
+                titleBox.classList.add('swapped');
+            }
+
             if (count > 0) {
                 numFly.innerText = count;
             } else {
@@ -464,7 +473,7 @@
             }
         }, 1000);
 
-        // Qor effekti
+        // Qor generatori
         const splashSnow = document.getElementById('splash-snow');
         for (let i = 0; i < 35; i++) {
             const flake = document.createElement('div');
@@ -476,9 +485,9 @@
             splashSnow.appendChild(flake);
         }
 
-        // Yomg'ir effekti
+        // Yomg'ir generatori
         const rainContainer = document.getElementById('rain');
-        for (let i = 0; i < 35; i++) {
+        for (let i = 0; i < 40; i++) {
             const drop = document.createElement('div');
             drop.className = 'drop';
             drop.style.left = Math.random() * 100 + 'vw';
@@ -486,7 +495,7 @@
             rainContainer.appendChild(drop);
         }
 
-        // Jonli Soat
+        // Real Vaqt
         function updateClock() {
             const now = new Date();
             const days = ['Yakshanba', 'Dushanba', 'Seshanba', 'Chorshanba', 'Payshanba', 'Juma', 'Shanba'];
@@ -498,7 +507,7 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        // Namoz vaqtlarini yuklash
+        // Namoz Vaqtlari API
         async function loadTimes() {
             try {
                 // Andijon
@@ -526,7 +535,7 @@
         }
         loadTimes();
 
-        // Audio Player (Biri chalinganda boshqasi to'xtaydi)
+        // Audio Player (Biri chalinganda boshqalari to'xtaydi)
         function playAudio(id) {
             const audios = ['yasin-audio', 'tabarak-audio', 'fiyahubbun-audio', 'allahuyalamu-audio'];
             audios.forEach(aId => {
