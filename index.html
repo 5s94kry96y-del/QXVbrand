@@ -20,14 +20,14 @@
             position: relative;
         }
 
-        /* Orqa fondagi yomg'ir va qor effekti */
+        /* Sun & Atmosphere Background */
         .sun-bg {
             position: fixed;
             top: -100px;
             right: -100px;
             width: 350px;
             height: 350px;
-            background: radial-gradient(circle, rgba(212, 175, 55, 0.2) 0%, rgba(0,0,0,0) 70%);
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.25) 0%, rgba(0,0,0,0) 70%);
             border-radius: 50%;
             pointer-events: none;
             z-index: 1;
@@ -71,7 +71,7 @@
             100% { transform: translateY(100vh) translateX(20px); }
         }
 
-        /* PREMIUM QORA ESHIK SPLASH SCREEN */
+        /* DRAMATIK QORA ESHIK SPLASH SCREEN (YORUG'LIKKA CHIQISH EFFEKTI) */
         #door-splash {
             position: fixed;
             top: 0;
@@ -83,6 +83,7 @@
             justify-content: center;
             align-items: center;
             overflow: hidden;
+            background: #000;
         }
 
         .door {
@@ -90,26 +91,37 @@
             top: 0;
             width: 50%;
             height: 100%;
-            background: #0d0d0d;
+            background: #050505;
             border: 2px solid #d4af37;
-            box-shadow: inset 0 0 50px rgba(0,0,0,0.9);
-            transition: transform 1.8s cubic-bezier(0.77, 0, 0.175, 1);
+            box-shadow: inset 0 0 100px rgba(0,0,0,1);
+            transition: transform 2.2s cubic-bezier(0.85, 0, 0.15, 1);
             z-index: 10;
         }
 
         .door-left {
             left: 0;
             border-right: 1px solid #d4af37;
-            transform: translateX(-100%);
+            transform: translateX(0);
         }
 
         .door-right {
             right: 0;
             border-left: 1px solid #d4af37;
-            transform: translateX(100%);
+            transform: translateX(0);
         }
 
-        /* Eshik ichidagi animatsiya kontenti */
+        /* Qorong'ulikdan chiquvchi nur */
+        .light-glow {
+            position: absolute;
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(circle, rgba(212,175,55,0.4) 0%, rgba(0,0,0,0) 80%);
+            opacity: 0;
+            transition: opacity 2s ease;
+            z-index: 4;
+            pointer-events: none;
+        }
+
         .splash-content {
             position: relative;
             z-index: 5;
@@ -128,17 +140,17 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             opacity: 0;
-            transform: scale(0.3);
-            animation: flyIn 1.2s forwards 0.8s;
+            transform: scale(0.5);
+            animation: flyIn 1.2s forwards 0.5s;
         }
 
         .welcome-text {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             color: #d4af37;
             margin-top: 10px;
             letter-spacing: 2px;
             opacity: 0;
-            animation: fadeIn 1s forwards 1.8s;
+            animation: fadeIn 1s forwards 1.2s;
         }
 
         .num-fly {
@@ -148,7 +160,7 @@
             text-shadow: 0 0 20px #d4af37;
             margin-top: 15px;
             opacity: 0;
-            animation: flyNum 0.8s forwards 1.2s;
+            animation: flyNum 0.8s forwards 1.5s;
         }
 
         @keyframes flyIn {
@@ -160,7 +172,7 @@
         }
 
         @keyframes flyNum {
-            0% { opacity: 0; transform: translateY(-100px) scale(2); }
+            0% { opacity: 0; transform: translateY(-80px) scale(1.8); }
             100% { opacity: 1; transform: translateY(0) scale(1); }
         }
 
@@ -173,7 +185,7 @@
             padding: 20px;
             display: none;
             opacity: 0;
-            transition: opacity 1s ease;
+            transition: opacity 1.5s ease;
         }
 
         .main-content.visible {
@@ -251,6 +263,11 @@
             border-radius: 8px;
             font-weight: bold;
             cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .action-btn:active {
+            transform: scale(0.98);
         }
 
         .search-box {
@@ -306,8 +323,9 @@
     <div class="sun-bg"></div>
     <div class="rain-container" id="rain"></div>
 
-    <!-- ESHIK MASHINA SPLASH SCREEN -->
+    <!-- ESHIK SPLASH SCREEN -->
     <div id="door-splash">
+        <div class="light-glow" id="glow"></div>
         <div class="door door-left" id="door-left"></div>
         <div class="door door-right" id="door-right"></div>
         <div class="snow-container" id="splash-snow"></div>
@@ -319,7 +337,7 @@
         </div>
     </div>
 
-    <!-- ASOSIY SHABLON -->
+    <!-- ASOSIY KONTENT -->
     <div class="main-content" id="main-content">
         
         <div class="card">
@@ -327,8 +345,9 @@
             <div class="live-clock" id="live-clock">Sana va Soat yuklanmoqda...</div>
             
             <div class="audio-group">
-                <button class="action-btn" onclick="playAudio('azanaudio')">Mishari Al-Afasy: HAQIQIY TO'LIQ AZON</button>
+                <button class="action-btn" onclick="playAudio('azanaudio')">HAQIQIY TO'LIQ AZON TINGLASH</button>
                 <button class="action-btn" style="background: linear-gradient(135deg, #11998e, #38ef7d); color:#fff;" onclick="playAudio('yasin-audio')">Mishari Al-Afasy: YASIN SURASI</button>
+                <button class="action-btn" style="background: linear-gradient(135deg, #4e54c8, #8f94fb); color:#fff;" onclick="playAudio('tabarak-audio')">Mishari Al-Afasy: TABORAK (MULK) SURASI</button>
             </div>
         </div>
 
@@ -393,24 +412,20 @@
 
     </div>
 
-    <!-- Mishari Al-Afasy HAQIQIY TO'LIQ AZON AUDIO -->
-    <audio id="azanaudio" src="https://media.mishari.org/Athan/Mishary_Rashid_Athan.mp3" preload="auto"></audio>
-    <!-- Mishari Al-Afasy YASIN SURASI AUDIO -->
+    <!-- RASMIY MAYIN AZON AUDIO -->
+    <audio id="azanaudio" src="https://cdn.islamic.network/quran/audio/128/ar.alafasy/1.mp3" preload="auto"></audio>
+    <!-- YASIN SURASI -->
     <audio id="yasin-audio" src="https://server8.mp3quran.net/afs/036.mp3" preload="auto"></audio>
+    <!-- TABORAK (MULK) SURASI -->
+    <audio id="tabarak-audio" src="https://server8.mp3quran.net/afs/067.mp3" preload="auto"></audio>
 
     <script>
-        // Eshik Yopilishi -> Qor Yog'ishi -> Eshik Ochilishi va Raqamlar Animatsiyasi
+        // Eshiklar Ochilishi va Yorug'lik Effekti
         const doorLeft = document.getElementById('door-left');
         const doorRight = document.getElementById('door-right');
         const numFly = document.getElementById('num-fly');
+        const glow = document.getElementById('glow');
 
-        // Step 1: Eshiklar tezda yopiladi
-        setTimeout(() => {
-            doorLeft.style.transform = 'translateX(0)';
-            doorRight.style.transform = 'translateX(0)';
-        }, 100);
-
-        // Step 2: Eshik yopilgach qor va raqamlar sanoq boshlanadi
         let count = 5;
         setTimeout(() => {
             const numTimer = setInterval(() => {
@@ -419,7 +434,9 @@
                     numFly.innerText = count;
                 } else {
                     clearInterval(numTimer);
-                    // Step 3: Eshiklar orqaga sekin ochiladi va asosiy sahifa namoyon bo'ladi
+                    
+                    // Qorong'ulikdan nurga chiqish va eshiklar ochilishi
+                    glow.style.opacity = '1';
                     doorLeft.style.transform = 'translateX(-100%)';
                     doorRight.style.transform = 'translateX(100%)';
                     
@@ -427,12 +444,12 @@
                         document.getElementById('door-splash').style.display = 'none';
                         const mainContent = document.getElementById('main-content');
                         mainContent.classList.add('visible');
-                    }, 1000);
+                    }, 1200);
                 }
             }, 800);
-        }, 1500);
+        }, 1000);
 
-        // Splash Snow generator
+        // Splash Snow
         const splashSnow = document.getElementById('splash-snow');
         for (let i = 0; i < 35; i++) {
             const flake = document.createElement('div');
@@ -494,18 +511,18 @@
         }
         loadTimes();
 
-        // Audio Player Handler
+        // Audio boshqaruv (Biri chalinganda qolganlari to'xtaydi)
         function playAudio(id) {
-            const azon = document.getElementById('azanaudio');
-            const yasin = document.getElementById('yasin-audio');
-            
-            if (id === 'azanaudio') {
-                yasin.pause();
-                azon.play();
-            } else if (id === 'yasin-audio') {
-                azon.pause();
-                yasin.play();
-            }
+            const audios = ['azanaudio', 'yasin-audio', 'tabarak-audio'];
+            audios.forEach(aId => {
+                const el = document.getElementById(aId);
+                if (aId === id) {
+                    el.play();
+                } else {
+                    el.pause();
+                    el.currentTime = 0;
+                }
+            });
         }
 
         // Ismlar Lug'ati
