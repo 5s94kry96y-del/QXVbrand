@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QXVbrand - Namoz Vaqtlari & Ismlar Ma'nosi</title>
+    <title>QXVbrand - Premium Namoz Vaqtlari & Ismlar Lug'ati</title>
     <style>
         * {
             box-sizing: border-box;
@@ -20,7 +20,7 @@
             position: relative;
         }
 
-        /* Weather Canvas & Sun Background */
+        /* Orqa fondagi yomg'ir va qor effekti */
         .sun-bg {
             position: fixed;
             top: -100px;
@@ -71,49 +71,100 @@
             100% { transform: translateY(100vh) translateX(20px); }
         }
 
-        /* Splash Screen */
-        #splash-screen {
+        /* PREMIUM QORA ESHIK SPLASH SCREEN */
+        #door-splash {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: #000;
             z-index: 9999;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
+            overflow: hidden;
+        }
+
+        .door {
+            position: absolute;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            background: #0d0d0d;
+            border: 2px solid #d4af37;
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.9);
+            transition: transform 1.8s cubic-bezier(0.77, 0, 0.175, 1);
+            z-index: 10;
+        }
+
+        .door-left {
+            left: 0;
+            border-right: 1px solid #d4af37;
+            transform: translateX(-100%);
+        }
+
+        .door-right {
+            right: 0;
+            border-left: 1px solid #d4af37;
+            transform: translateX(100%);
+        }
+
+        /* Eshik ichidagi animatsiya kontenti */
+        .splash-content {
+            position: relative;
+            z-index: 5;
             text-align: center;
-            transition: opacity 1s ease, visibility 1s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
         .splash-title {
             font-size: 3.5rem;
             font-weight: 900;
-            letter-spacing: 4px;
+            letter-spacing: 6px;
             background: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 20px;
+            opacity: 0;
+            transform: scale(0.3);
+            animation: flyIn 1.2s forwards 0.8s;
         }
 
-        .num-anim {
-            font-size: 5rem;
-            font-weight: bold;
+        .welcome-text {
+            font-size: 1.3rem;
             color: #d4af37;
-            position: absolute;
-            top: -100px;
-            animation: dropDown 1s ease forwards;
+            margin-top: 10px;
+            letter-spacing: 2px;
+            opacity: 0;
+            animation: fadeIn 1s forwards 1.8s;
         }
 
-        @keyframes dropDown {
-            0% { top: -100px; opacity: 0; }
-            50% { top: 50%; transform: translateY(-50%); opacity: 1; }
-            100% { top: 100vh; opacity: 0; }
+        .num-fly {
+            font-size: 4rem;
+            font-weight: bold;
+            color: #ffffff;
+            text-shadow: 0 0 20px #d4af37;
+            margin-top: 15px;
+            opacity: 0;
+            animation: flyNum 0.8s forwards 1.2s;
         }
 
-        /* Main Container */
+        @keyframes flyIn {
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        @keyframes flyNum {
+            0% { opacity: 0; transform: translateY(-100px) scale(2); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* Asosiy Kontent */
         .main-content {
             position: relative;
             z-index: 10;
@@ -121,6 +172,13 @@
             margin: 0 auto;
             padding: 20px;
             display: none;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .main-content.visible {
+            display: block;
+            opacity: 1;
         }
 
         .card {
@@ -146,6 +204,13 @@
             font-size: 0.9rem;
             margin-top: 5px;
             margin-bottom: 15px;
+        }
+
+        .audio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
         }
 
         .region-title {
@@ -186,7 +251,6 @@
             border-radius: 8px;
             font-weight: bold;
             cursor: pointer;
-            margin-top: 15px;
         }
 
         .search-box {
@@ -242,23 +306,33 @@
     <div class="sun-bg"></div>
     <div class="rain-container" id="rain"></div>
 
-    <!-- Splash Screen -->
-    <div id="splash-screen">
+    <!-- ESHIK MASHINA SPLASH SCREEN -->
+    <div id="door-splash">
+        <div class="door door-left" id="door-left"></div>
+        <div class="door door-right" id="door-right"></div>
         <div class="snow-container" id="splash-snow"></div>
-        <div class="splash-title">QXVbrand</div>
-        <div id="num-box" class="num-anim">5</div>
+
+        <div class="splash-content">
+            <div class="splash-title">QXVbrand</div>
+            <div class="welcome-text">XUSH KELIBSIZ</div>
+            <div class="num-fly" id="num-fly">5</div>
+        </div>
     </div>
 
-    <!-- Main Content -->
+    <!-- ASOSIY SHABLON -->
     <div class="main-content" id="main-content">
         
         <div class="card">
             <div class="brand-header">QXVbrand</div>
             <div class="live-clock" id="live-clock">Sana va Soat yuklanmoqda...</div>
-            <button class="action-btn" onclick="playAzon()">Mishari Al-Afasy: To'liq Azon Tinglash</button>
+            
+            <div class="audio-group">
+                <button class="action-btn" onclick="playAudio('azanaudio')">Mishari Al-Afasy: HAQIQIY TO'LIQ AZON</button>
+                <button class="action-btn" style="background: linear-gradient(135deg, #11998e, #38ef7d); color:#fff;" onclick="playAudio('yasin-audio')">Mishari Al-Afasy: YASIN SURASI</button>
+            </div>
         </div>
 
-        <!-- Prayer Times -->
+        <!-- Namoz Vaqtlari -->
         <div class="card">
             <div class="region-title">Andijon Viloyati Namoz Vaqtlari</div>
             <div class="prayer-list">
@@ -310,7 +384,7 @@
             <div style="font-weight: bold; color: #d4af37; margin-bottom: 8px;">Ismlar Ma'nosi Lug'ati</div>
             <div class="search-box">
                 <input type="text" id="name-input" class="search-input" placeholder="Ism kiriting (masalan: Muhammadimron)">
-                <button class="action-btn" style="margin-top:0; width: auto;" onclick="searchName()">Izlash</button>
+                <button class="action-btn" style="width: auto;" onclick="searchName()">Izlash</button>
             </div>
             <div class="meaning-result" id="meaning-output">Ism ma'nosini bilish uchun qidiruvdan foydalaning.</div>
         </div>
@@ -319,13 +393,48 @@
 
     </div>
 
-    <!-- Mishari Al-Afasy Azon Audio -->
-    <audio id="azanaudio" src="https://cdn.islamic.network/quran/audio/128/ar.alafasy/1.mp3" preload="auto"></audio>
+    <!-- Mishari Al-Afasy HAQIQIY TO'LIQ AZON AUDIO -->
+    <audio id="azanaudio" src="https://media.mishari.org/Athan/Mishary_Rashid_Athan.mp3" preload="auto"></audio>
+    <!-- Mishari Al-Afasy YASIN SURASI AUDIO -->
+    <audio id="yasin-audio" src="https://server8.mp3quran.net/afs/036.mp3" preload="auto"></audio>
 
     <script>
-        // Splash snow effect
+        // Eshik Yopilishi -> Qor Yog'ishi -> Eshik Ochilishi va Raqamlar Animatsiyasi
+        const doorLeft = document.getElementById('door-left');
+        const doorRight = document.getElementById('door-right');
+        const numFly = document.getElementById('num-fly');
+
+        // Step 1: Eshiklar tezda yopiladi
+        setTimeout(() => {
+            doorLeft.style.transform = 'translateX(0)';
+            doorRight.style.transform = 'translateX(0)';
+        }, 100);
+
+        // Step 2: Eshik yopilgach qor va raqamlar sanoq boshlanadi
+        let count = 5;
+        setTimeout(() => {
+            const numTimer = setInterval(() => {
+                count--;
+                if (count > 0) {
+                    numFly.innerText = count;
+                } else {
+                    clearInterval(numTimer);
+                    // Step 3: Eshiklar orqaga sekin ochiladi va asosiy sahifa namoyon bo'ladi
+                    doorLeft.style.transform = 'translateX(-100%)';
+                    doorRight.style.transform = 'translateX(100%)';
+                    
+                    setTimeout(() => {
+                        document.getElementById('door-splash').style.display = 'none';
+                        const mainContent = document.getElementById('main-content');
+                        mainContent.classList.add('visible');
+                    }, 1000);
+                }
+            }, 800);
+        }, 1500);
+
+        // Splash Snow generator
         const splashSnow = document.getElementById('splash-snow');
-        for (let i = 0; i < 30; i++) {
+        for (let i = 0; i < 35; i++) {
             const flake = document.createElement('div');
             flake.className = 'flake';
             flake.style.width = Math.random() * 5 + 2 + 'px';
@@ -335,7 +444,7 @@
             splashSnow.appendChild(flake);
         }
 
-        // Rain effect
+        // Background Rain
         const rainContainer = document.getElementById('rain');
         for (let i = 0; i < 35; i++) {
             const drop = document.createElement('div');
@@ -344,26 +453,6 @@
             drop.style.animationDuration = (0.6 + Math.random() * 0.4) + 's';
             rainContainer.appendChild(drop);
         }
-
-        // Splash screen countdown (5 to 1)
-        let numbers = [5, 4, 3, 2, 1];
-        let idx = 0;
-        const numBox = document.getElementById('num-box');
-
-        const numInterval = setInterval(() => {
-            idx++;
-            if (idx < numbers.length) {
-                numBox.style.animation = 'none';
-                void numBox.offsetWidth; // Trigger reflow
-                numBox.innerText = numbers[idx];
-                numBox.style.animation = 'dropDown 1s ease forwards';
-            } else {
-                clearInterval(numInterval);
-                document.getElementById('splash-screen').style.opacity = '0';
-                document.getElementById('splash-screen').style.visibility = 'hidden';
-                document.getElementById('main-content').style.display = 'block';
-            }
-        }, 1000);
 
         // Live Clock
         function updateClock() {
@@ -377,10 +466,10 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        // Fetch Prayer Times
+        // Namoz Vaqtlarini Yuklash
         async function loadTimes() {
             try {
-                // Andijan
+                // Andijon
                 const resA = await fetch('https://api.aladhan.com/v1/timingsByCity?city=Andijan&country=Uzbekistan&method=3');
                 const dataA = await resA.json();
                 const tA = dataA.data.timings;
@@ -390,7 +479,7 @@
                 document.getElementById('and-Maghrib').innerText = tA.Maghrib;
                 document.getElementById('and-Isha').innerText = tA.Isha;
 
-                // Tashkent
+                // Toshkent
                 const resT = await fetch('https://api.aladhan.com/v1/timingsByCity?city=Tashkent&country=Uzbekistan&method=3');
                 const dataT = await resT.json();
                 const tT = dataT.data.timings;
@@ -405,13 +494,21 @@
         }
         loadTimes();
 
-        // Audio Azon
-        function playAzon() {
-            const audio = document.getElementById('azanaudio');
-            audio.play();
+        // Audio Player Handler
+        function playAudio(id) {
+            const azon = document.getElementById('azanaudio');
+            const yasin = document.getElementById('yasin-audio');
+            
+            if (id === 'azanaudio') {
+                yasin.pause();
+                azon.play();
+            } else if (id === 'yasin-audio') {
+                azon.pause();
+                yasin.play();
+            }
         }
 
-        // Names Dictionary
+        // Ismlar Lug'ati
         const namesDb = {
             "muhammad": "Maqtovga loyiq, ulug'langan. Payg'ambarimiz (s.a.v.) ismi.",
             "muhammadrasul": "Muhammad — Allohning elchisi va payg'ambari degan ma'noni bildiradi.",
