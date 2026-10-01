@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QXVbrand - Andijon Namoz Vaqtlari & Ismlar Ma'nosi</title>
+    <title>QXVbrand - Namoz Vaqtlari & Ismlar Ma'nosi</title>
     <style>
         * {
             box-sizing: border-box;
@@ -13,40 +13,27 @@
         }
 
         body {
-            background-color: #080808;
+            background: #080808;
             color: #ffffff;
             min-height: 100vh;
             overflow-x: hidden;
             position: relative;
         }
 
-        /* Weather / Season Background Canvas */
-        #bg-canvas {
+        /* Weather Canvas & Sun Background */
+        .sun-bg {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: -100px;
+            right: -100px;
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.2) 0%, rgba(0,0,0,0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
             z-index: 1;
-            transition: filter 1s ease, background 1s ease;
         }
 
-        /* Seasonal background overlay classes */
-        .season-winter {
-            background: linear-gradient(180deg, #050a14 0%, #0d1b2a 100%);
-        }
-        .season-spring {
-            background: linear-gradient(180deg, #091a0f 0%, #0d2b18 100%);
-        }
-        .season-summer {
-            background: linear-gradient(180deg, #1f1200 0%, #080808 100%);
-        }
-        .season-autumn {
-            background: linear-gradient(180deg, #1c0a00 0%, #080808 100%);
-        }
-
-        /* Rain Overlay Animation */
-        .rain-container {
+        .rain-container, .snow-container {
             position: fixed;
             top: 0;
             left: 0;
@@ -61,65 +48,69 @@
             position: absolute;
             background: linear-gradient(transparent, rgba(212, 175, 55, 0.4));
             width: 1px;
-            height: 40px;
-            opacity: 0.6;
+            height: 35px;
+            opacity: 0.5;
             animation: fall 1s linear infinite;
         }
 
         @keyframes fall {
-            0% { transform: translateY(-100px); }
+            0% { transform: translateY(-50px); }
             100% { transform: translateY(100vh); }
         }
 
-        /* 5-Second Splash Screen */
+        .flake {
+            position: absolute;
+            background: #fff;
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: snowfall 3s linear infinite;
+        }
+
+        @keyframes snowfall {
+            0% { transform: translateY(-10px) translateX(0); }
+            100% { transform: translateY(100vh) translateX(20px); }
+        }
+
+        /* Splash Screen */
         #splash-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: #000000;
+            background: #000;
             z-index: 9999;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 20px;
             transition: opacity 1s ease, visibility 1s ease;
         }
 
         .splash-title {
-            font-size: 3rem;
+            font-size: 3.5rem;
             font-weight: 900;
             letter-spacing: 4px;
-            background: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7);
+            background: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
-            margin-bottom: 15px;
-            animation: pulse 1.5s infinite alternate;
+            margin-bottom: 20px;
         }
 
-        .splash-quote {
-            font-size: 1.2rem;
-            color: #e0e0e0;
-            margin-bottom: 25px;
-            font-style: italic;
-            max-width: 80%;
-            line-height: 1.5;
-        }
-
-        .splash-countdown {
-            font-size: 4rem;
+        .num-anim {
+            font-size: 5rem;
             font-weight: bold;
             color: #d4af37;
-            text-shadow: 0 0 15px rgba(212, 175, 55, 0.8);
+            position: absolute;
+            top: -100px;
+            animation: dropDown 1s ease forwards;
         }
 
-        @keyframes pulse {
-            0% { transform: scale(0.98); }
-            100% { transform: scale(1.02); }
+        @keyframes dropDown {
+            0% { top: -100px; opacity: 0; }
+            50% { top: 50%; transform: translateY(-50%); opacity: 1; }
+            100% { top: 100vh; opacity: 0; }
         }
 
         /* Main Container */
@@ -129,12 +120,7 @@
             max-width: 500px;
             margin: 0 auto;
             padding: 20px;
-            opacity: 0;
-            transition: opacity 1s ease;
-        }
-
-        .main-content.visible {
-            opacity: 1;
+            display: none;
         }
 
         .card {
@@ -142,67 +128,53 @@
             border: 1px solid rgba(212, 175, 55, 0.3);
             backdrop-filter: blur(10px);
             border-radius: 16px;
-            padding: 24px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+            padding: 20px;
             margin-bottom: 20px;
-            text-align: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.7);
         }
 
         .brand-header {
             font-size: 1.8rem;
             font-weight: bold;
             color: #d4af37;
-            letter-spacing: 2px;
-            margin-bottom: 5px;
+            text-align: center;
         }
 
-        .location-sub {
-            color: #aaaaaa;
+        .live-clock {
+            text-align: center;
+            color: #aaa;
             font-size: 0.9rem;
-            margin-bottom: 20px;
+            margin-top: 5px;
+            margin-bottom: 15px;
         }
 
-        .season-badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 12px;
-            border: 1px solid #d4af37;
+        .region-title {
+            font-size: 1.1rem;
             color: #d4af37;
-            font-size: 0.8rem;
-            margin-bottom: 15px;
-            background: rgba(212, 175, 55, 0.1);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            padding-bottom: 5px;
+            margin-top: 15px;
+            margin-bottom: 10px;
         }
 
         .prayer-list {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            margin-bottom: 20px;
+            gap: 8px;
         }
 
         .prayer-item {
             display: flex;
             justify-content: space-between;
-            align-items: center;
             background: rgba(30, 30, 30, 0.7);
-            padding: 12px 16px;
-            border-radius: 10px;
-            border-left: 3px solid transparent;
-            transition: all 0.3s;
-        }
-
-        .prayer-item.active {
-            border-left-color: #d4af37;
-            background: rgba(212, 175, 55, 0.15);
-        }
-
-        .prayer-name {
-            font-weight: 600;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 0.95rem;
         }
 
         .prayer-time {
-            font-weight: 700;
             color: #d4af37;
+            font-weight: bold;
         }
 
         .action-btn {
@@ -210,23 +182,17 @@
             color: #000;
             border: none;
             width: 100%;
-            padding: 14px;
-            border-radius: 10px;
+            padding: 12px;
+            border-radius: 8px;
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
-            transition: transform 0.2s;
+            margin-top: 15px;
         }
 
-        .action-btn:active {
-            transform: scale(0.98);
-        }
-
-        /* Name Meaning Section */
         .search-box {
             display: flex;
             gap: 8px;
-            margin-top: 15px;
+            margin-top: 10px;
         }
 
         .search-input {
@@ -239,190 +205,236 @@
             outline: none;
         }
 
-        .search-input:focus {
-            border-color: #d4af37;
-        }
-
         .meaning-result {
-            margin-top: 15px;
-            padding: 12px;
+            margin-top: 10px;
+            padding: 10px;
             background: rgba(30, 30, 30, 0.5);
             border-radius: 8px;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             color: #ddd;
-            min-height: 50px;
+        }
+
+        .learn-item {
+            background: rgba(30, 30, 30, 0.6);
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            border-left: 3px solid #d4af37;
+        }
+
+        .learn-title {
+            color: #d4af37;
+            font-weight: bold;
+            font-size: 0.95rem;
+        }
+
+        .footer-note {
+            text-align: right;
+            font-size: 9px;
+            color: #666;
+            margin-top: 20px;
+            padding-bottom: 20px;
         }
     </style>
 </head>
-<body class="season-winter">
+<body>
 
-    <div id="bg-canvas"></div>
+    <div class="sun-bg"></div>
     <div class="rain-container" id="rain"></div>
 
     <!-- Splash Screen -->
     <div id="splash-screen">
+        <div class="snow-container" id="splash-snow"></div>
         <div class="splash-title">QXVbrand</div>
-        <div class="splash-quote">"Sabr va namoz jannat kalitidir"</div>
-        <div class="splash-countdown" id="countdown">5</div>
+        <div id="num-box" class="num-anim">5</div>
     </div>
 
-    <!-- Main Application -->
+    <!-- Main Content -->
     <div class="main-content" id="main-content">
         
-        <!-- Prayer Times Card -->
         <div class="card">
             <div class="brand-header">QXVbrand</div>
-            <div class="location-sub">Andijon Viloyati Namoz Vaqtlari</div>
-            <div class="season-badge" id="season-name">Fasl: Qish</div>
-
-            <div class="prayer-list">
-                <div class="prayer-item" id="card-Fajr"><span class="prayer-name">Bomdod</span><span class="prayer-time" id="time-Fajr">--:--</span></div>
-                <div class="prayer-item" id="card-Dhuhr"><span class="prayer-name">Peshin</span><span class="prayer-time" id="time-Dhuhr">--:--</span></div>
-                <div class="prayer-item" id="card-Asr"><span class="prayer-name">Asr</span><span class="prayer-time" id="time-Asr">--:--</span></div>
-                <div class="prayer-item" id="card-Maghrib"><span class="prayer-name">Shom</span><span class="prayer-time" id="time-Maghrib">--:--</span></div>
-                <div class="prayer-item" id="card-Isha"><span class="prayer-name">Xufton</span><span class="prayer-time" id="time-Isha">--:--</span></div>
-            </div>
-
-            <button class="action-btn" onclick="enableAudio()">Ovozni va Azonni Yoqish</button>
-            <div id="status-text" style="font-size: 11px; color: #888; margin-top: 10px;">Azon ovozi chiqishi uchun bir marta bosing</div>
+            <div class="live-clock" id="live-clock">Sana va Soat yuklanmoqda...</div>
+            <button class="action-btn" onclick="playAzon()">Mishari Al-Afasy: To'liq Azon Tinglash</button>
         </div>
 
-        <!-- Name Dictionary Card -->
+        <!-- Prayer Times -->
         <div class="card">
-            <div style="font-weight: bold; color: #d4af37; margin-bottom: 10px;">Ismlar Ma'nosi Lug'ati</div>
-            <div class="search-box">
-                <input type="text" id="name-input" class="search-input" placeholder="Ism kiriting (masalan: Muhammad, Sabr)">
-                <button class="action-btn" style="width: auto; padding: 10px 15px;" onclick="searchName()">Izlash</button>
+            <div class="region-title">Andijon Viloyati Namoz Vaqtlari</div>
+            <div class="prayer-list">
+                <div class="prayer-item"><span>Bomdod</span><span class="prayer-time" id="and-Fajr">--:--</span></div>
+                <div class="prayer-item"><span>Peshin</span><span class="prayer-time" id="and-Dhuhr">--:--</span></div>
+                <div class="prayer-item"><span>Asr</span><span class="prayer-time" id="and-Asr">--:--</span></div>
+                <div class="prayer-item"><span>Shom</span><span class="prayer-time" id="and-Maghrib">--:--</span></div>
+                <div class="prayer-item"><span>Xufton</span><span class="prayer-time" id="and-Isha">--:--</span></div>
             </div>
-            <div class="meaning-result" id="meaning-output">Ism ma'nosini bilish uchun yuqoriga yozing.</div>
+
+            <div class="region-title">Toshkent Viloyati Namoz Vaqtlari</div>
+            <div class="prayer-list">
+                <div class="prayer-item"><span>Bomdod</span><span class="prayer-time" id="tash-Fajr">--:--</span></div>
+                <div class="prayer-item"><span>Peshin</span><span class="prayer-time" id="tash-Dhuhr">--:--</span></div>
+                <div class="prayer-item"><span>Asr</span><span class="prayer-time" id="tash-Asr">--:--</span></div>
+                <div class="prayer-item"><span>Shom</span><span class="prayer-time" id="tash-Maghrib">--:--</span></div>
+                <div class="prayer-item"><span>Xufton</span><span class="prayer-time" id="tash-Isha">--:--</span></div>
+            </div>
         </div>
+
+        <!-- Namoz O'rganish -->
+        <div class="card">
+            <div style="font-weight: bold; color: #d4af37; margin-bottom: 12px; text-align: center;">Namoz O'qishni O'rganish (Rakatlar Tartibi)</div>
+            
+            <div class="learn-item">
+                <div class="learn-title">Bomdod Namozi (4 Rakat)</div>
+                <div style="font-size: 0.85rem; color: #ccc;">2 rakat Sunnat, 2 rakat Farz.</div>
+            </div>
+            <div class="learn-item">
+                <div class="learn-title">Peshin Namozi (10 Rakat)</div>
+                <div style="font-size: 0.85rem; color: #ccc;">4 rakat Sunnat, 4 rakat Farz, 2 rakat Sunnat.</div>
+            </div>
+            <div class="learn-item">
+                <div class="learn-title">Asr Namozi (4 Rakat)</div>
+                <div style="font-size: 0.85rem; color: #ccc;">4 rakat Farz.</div>
+            </div>
+            <div class="learn-item">
+                <div class="learn-title">Shom Namozi (5 Rakat)</div>
+                <div style="font-size: 0.85rem; color: #ccc;">3 rakat Farz, 2 rakat Sunnat.</div>
+            </div>
+            <div class="learn-item">
+                <div class="learn-title">Xufton Namozi (9 Rakat)</div>
+                <div style="font-size: 0.85rem; color: #ccc;">4 rakat Farz, 2 rakat Sunnat, 3 rakat Vitr Vajib.</div>
+            </div>
+        </div>
+
+        <!-- Ismlar Ma'nosi -->
+        <div class="card">
+            <div style="font-weight: bold; color: #d4af37; margin-bottom: 8px;">Ismlar Ma'nosi Lug'ati</div>
+            <div class="search-box">
+                <input type="text" id="name-input" class="search-input" placeholder="Ism kiriting (masalan: Muhammadimron)">
+                <button class="action-btn" style="margin-top:0; width: auto;" onclick="searchName()">Izlash</button>
+            </div>
+            <div class="meaning-result" id="meaning-output">Ism ma'nosini bilish uchun qidiruvdan foydalaning.</div>
+        </div>
+
+        <div class="footer-note">Manfaatimiz tegsa xursandmiz — Qobiljonov Xojiakbar</div>
 
     </div>
 
+    <!-- Mishari Al-Afasy Azon Audio -->
     <audio id="azanaudio" src="https://cdn.islamic.network/quran/audio/128/ar.alafasy/1.mp3" preload="auto"></audio>
 
     <script>
-        // 1. Splash Countdown
-        let count = 5;
-        const countdownEl = document.getElementById('countdown');
-        const splashEl = document.getElementById('splash-screen');
-        const mainContent = document.getElementById('main-content');
+        // Splash snow effect
+        const splashSnow = document.getElementById('splash-snow');
+        for (let i = 0; i < 30; i++) {
+            const flake = document.createElement('div');
+            flake.className = 'flake';
+            flake.style.width = Math.random() * 5 + 2 + 'px';
+            flake.style.height = flake.style.width;
+            flake.style.left = Math.random() * 100 + 'vw';
+            flake.style.animationDuration = (2 + Math.random() * 3) + 's';
+            splashSnow.appendChild(flake);
+        }
 
-        const timer = setInterval(() => {
-            count--;
-            if (count > 0) {
-                countdownEl.innerText = count;
-            } else {
-                clearInterval(timer);
-                splashEl.style.opacity = '0';
-                splashEl.style.visibility = 'hidden';
-                mainContent.classList.add('visible');
-            }
-        }, 1000);
-
-        // 2. Dynamic Rain Drops
+        // Rain effect
         const rainContainer = document.getElementById('rain');
-        for (let i = 0; i < 40; i++) {
+        for (let i = 0; i < 35; i++) {
             const drop = document.createElement('div');
             drop.className = 'drop';
             drop.style.left = Math.random() * 100 + 'vw';
-            drop.style.animationDuration = (0.5 + Math.random() * 0.5) + 's';
-            drop.style.animationDelay = Math.random() * 2 + 's';
+            drop.style.animationDuration = (0.6 + Math.random() * 0.4) + 's';
             rainContainer.appendChild(drop);
         }
 
-        // 3. Seasonal background switch every 10 seconds
-        const seasons = [
-            { class: 'season-winter', name: 'Fasl: Qish' },
-            { class: 'season-spring', name: 'Fasl: Bahor' },
-            { class: 'season-summer', name: 'Fasl: Yoz' },
-            { class: 'season-autumn', name: 'Fasl: Kuz' }
-        ];
-        let seasonIndex = 0;
+        // Splash screen countdown (5 to 1)
+        let numbers = [5, 4, 3, 2, 1];
+        let idx = 0;
+        const numBox = document.getElementById('num-box');
 
-        setInterval(() => {
-            document.body.className = seasons[seasonIndex].class;
-            document.getElementById('season-name').innerText = seasons[seasonIndex].name;
-            seasonIndex = (seasonIndex + 1) % seasons.length;
-        }, 10000);
+        const numInterval = setInterval(() => {
+            idx++;
+            if (idx < numbers.length) {
+                numBox.style.animation = 'none';
+                void numBox.offsetWidth; // Trigger reflow
+                numBox.innerText = numbers[idx];
+                numBox.style.animation = 'dropDown 1s ease forwards';
+            } else {
+                clearInterval(numInterval);
+                document.getElementById('splash-screen').style.opacity = '0';
+                document.getElementById('splash-screen').style.visibility = 'hidden';
+                document.getElementById('main-content').style.display = 'block';
+            }
+        }, 1000);
 
-        // 4. Prayer Times for Andijan
-        let timesData = {};
-        let audioEnabled = false;
+        // Live Clock
+        function updateClock() {
+            const now = new Date();
+            const days = ['Yakshanba', 'Dushanba', 'Seshanba', 'Chorshanba', 'Payshanba', 'Juma', 'Shanba'];
+            const dayName = days[now.getDay()];
+            const dateStr = now.toLocaleDateString('uz-UZ');
+            const timeStr = now.toLocaleTimeString('uz-UZ');
+            document.getElementById('live-clock').innerText = `${dateStr} (${dayName}) - ${timeStr}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
 
-        async function fetchPrayerTimes() {
+        // Fetch Prayer Times
+        async function loadTimes() {
             try {
-                const res = await fetch('https://api.aladhan.com/v1/timingsByCity?city=Andijan&country=Uzbekistan&method=3');
-                const data = await res.json();
-                timesData = data.data.timings;
+                // Andijan
+                const resA = await fetch('https://api.aladhan.com/v1/timingsByCity?city=Andijan&country=Uzbekistan&method=3');
+                const dataA = await resA.json();
+                const tA = dataA.data.timings;
+                document.getElementById('and-Fajr').innerText = tA.Fajr;
+                document.getElementById('and-Dhuhr').innerText = tA.Dhuhr;
+                document.getElementById('and-Asr').innerText = tA.Asr;
+                document.getElementById('and-Maghrib').innerText = tA.Maghrib;
+                document.getElementById('and-Isha').innerText = tA.Isha;
 
-                document.getElementById('time-Fajr').innerText = timesData.Fajr;
-                document.getElementById('time-Dhuhr').innerText = timesData.Dhuhr;
-                document.getElementById('time-Asr').innerText = timesData.Asr;
-                document.getElementById('time-Maghrib').innerText = timesData.Maghrib;
-                document.getElementById('time-Isha').innerText = timesData.Isha;
+                // Tashkent
+                const resT = await fetch('https://api.aladhan.com/v1/timingsByCity?city=Tashkent&country=Uzbekistan&method=3');
+                const dataT = await resT.json();
+                const tT = dataT.data.timings;
+                document.getElementById('tash-Fajr').innerText = tT.Fajr;
+                document.getElementById('tash-Dhuhr').innerText = tT.Dhuhr;
+                document.getElementById('tash-Asr').innerText = tT.Asr;
+                document.getElementById('tash-Maghrib').innerText = tT.Maghrib;
+                document.getElementById('tash-Isha').innerText = tT.Isha;
             } catch (e) {
-                document.getElementById('status-text').innerText = "Vaqtlarni yuklashda xatolik yuz berdi.";
+                console.log(e);
             }
         }
+        loadTimes();
 
-        function enableAudio() {
+        // Audio Azon
+        function playAzon() {
             const audio = document.getElementById('azanaudio');
-            audio.play().then(() => {
-                audio.pause();
-                audio.currentTime = 0;
-                audioEnabled = true;
-                document.getElementById('status-text').innerText = "Ovoz aktivlashtirildi ✓";
-            }).catch(err => {
-                console.log(err);
-            });
+            audio.play();
         }
 
-        setInterval(() => {
-            const now = new Date();
-            const currentHM = now.toTimeString().substring(0, 5);
-            const prayers = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
-
-            prayers.forEach(p => {
-                if (timesData[p] === currentHM) {
-                    document.getElementById(`card-${p}`).classList.add('active');
-                    if (audioEnabled) {
-                        const audio = document.getElementById('azanaudio');
-                        audio.play();
-                    }
-                } else {
-                    document.getElementById(`card-${p}`).classList.remove('active');
-                }
-            });
-        }, 10000);
-
-        fetchPrayerTimes();
-
-        // 5. Islamic Name Dictionary
-        const nameDictionary = {
+        // Names Dictionary
+        const namesDb = {
             "muhammad": "Maqtovga loyiq, ulug'langan. Payg'ambarimiz (s.a.v.) ismi.",
-            "sabr": "Chidamli, sabr-toqatli, matonatli.",
-            "ali": "Oliy, yuksak, martabasi baland.",
-            "umar": "Hayot, yashash, uzoq umr ko'ruvchi.",
-            "usmon": "To'g'rilik, g'amxo'r, mehribon.",
-            "aziz": "Qadrli, izzatli, qudratli.",
-            "madina": "Shaharlik, madaniyatli. Muqaddas shahar nomi.",
-            "oxun": "Ustoz, bilimdon, ilmli kishi."
+            "muhammadrasul": "Muhammad — Allohning elchisi va payg'ambari degan ma'noni bildiradi.",
+            "muhammadimron": "Muhammad (maqtovli) hamda Imron (obodlik, bunyodkorlik) ismlari birikmasi.",
+            "imron": "Obod etuvchi, uzoq umr ko'ruvchi, bunyodkor.",
+            "ilyos": "Alloh mening Tangrimdir. Ilyos payg'ambar ismi.",
+            "sabr": "Chidamli, matonatli va og'ir-bosiq kishi.",
+            "ali": "Yuksak, martabasi baland, oliy va qudratli."
         };
 
         function searchName() {
-            const input = document.getElementById('name-input').value.trim().toLowerCase();
-            const output = document.getElementById('meaning-output');
+            const val = document.getElementById('name-input').value.trim().toLowerCase();
+            const out = document.getElementById('meaning-output');
 
-            if (!input) {
-                output.innerText = "Iltimos, ism kiriting.";
+            if (!val) {
+                out.innerText = "Iltimos, ism kiriting.";
                 return;
             }
 
-            if (nameDictionary[input]) {
-                output.innerText = `${input.toUpperCase()}: ${nameDictionary[input]}`;
+            if (namesDb[val]) {
+                out.innerText = `${val.toUpperCase()}: ${namesDb[val]}`;
             } else {
-                output.innerText = `"${input}" ismi lug'atdan topilmadi. Boshqa ism sinab ko'ring.`;
+                out.innerText = `"${val}" ismi lug'atdan topilmadi. Boshqa ism kiritib ko'ring.`;
             }
         }
     </script>
