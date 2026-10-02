@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maydon Bozor MFY - Portal</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background: #050505;
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Fon Nur Effekti */
+        .animated-bg {
+            position: fixed;
+            top: -150px;
+            right: -150px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.25) 0%, rgba(0,0,0,0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1;
+            animation: pulseGlow 6s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulseGlow {
+            0% { transform: scale(1) translate(0, 0); opacity: 0.6; }
+            50% { transform: scale(1.3) translate(-30px, 40px); opacity: 0.9; }
+            100% { transform: scale(1.1) translate(20px, -20px); opacity: 0.7; }
+        }
+
+        /* SPLASH SCREEN & FAST DOOR */
+        #door-splash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .door {
+            position: absolute;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            background: #080808;
+            border: 2px solid #d4af37;
+            box-shadow: inset 0 0 100px rgba(0,0,0,1);
+            transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1);
+            z-index: 10;
+        }
+
+        .door-left { left: 0; border-right: 1px solid #d4af37; }
+        .door-right { right: 0; border-left: 1px solid #d4af37; }
+
+        .splash-content {
+            position: relative;
+            z-index: 5;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .flag-box {
+            width: 120px;
+            height: 60px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .flag-stripe { flex: 1; width: 100%; }
+        .flag-blue { background: #0099b5; position: relative; }
+        .flag-red1 { background: #ce1126; height: 3px; }
+        .flag-white { background: #ffffff; }
+        .flag-red2 { background: #ce1126; height: 3px; }
+        .flag-green { background: #1eb53a; }
+
+        .title-sub {
+            font-size: 0.9rem;
+            color: #d4af37;
+            letter-spacing: 2px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .title-main {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-top: 5px;
+        }
+
+        .num-fly {
+            font-size: 4rem;
+            font-weight: bold;
+            color: #ffffff;
+            text-shadow: 0 0 20px #d4af37;
+            margin-top: 15px;
+        }
+
+        /* Asosiy Kontent */
+        .main-content {
+            position: relative;
+            z-index: 10;
+            max-width: 550px;
+            margin: 0 auto;
+            padding: 20px;
+            display: none;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .main-content.visible {
+            display: block;
+            opacity: 1;
+        }
+
+        .card {
+            background: rgba(18, 18, 18, 0.85);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.7);
+        }
+
+        .header-section {
+            text-align: center;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+
+        .header-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #d4af37;
+            margin-top: 8px;
+        }
+
+        .header-location {
+            font-size: 0.85rem;
+            color: #bbb;
+            margin-top: 4px;
+        }
+
+        .btn-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .action-btn {
+            background: linear-gradient(135deg, #bf953f, #aa820a);
+            color: #000;
+            border: none;
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .action-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Street Details */
+        .street-block {
+            background: rgba(30, 30, 30, 0.6);
+            border-radius: 10px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .street-header {
+            padding: 12px 15px;
+            background: rgba(212, 175, 55, 0.15);
+            color: #d4af37;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .street-content {
+            padding: 12px 15px;
+            display: none;
+            border-top: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        .street-content.active {
+            display: block;
+        }
+
+        .house-item {
+            padding: 8px 0;
+            border-bottom: 1px dashed rgba(255,255,255,0.1);
+            font-size: 0.9rem;
+        }
+
+        .house-item:last-child {
+            border-bottom: none;
+        }
+
+        .house-name {
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .house-phone {
+            color: #aaa;
+            font-size: 0.85rem;
+            margin-top: 2px;
+        }
+
+        /* Modal (Murojaat uchun) */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(8px);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: #151515;
+            border: 1px solid #d4af37;
+            border-radius: 16px;
+            padding: 20px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+        }
+
+        .modal-header {
+            font-size: 1.1rem;
+            color: #d4af37;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .modal-info {
+            font-size: 0.85rem;
+            color: #00ffcc;
+            background: rgba(0, 255, 204, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            border-left: 3px solid #00ffcc;
+        }
+
+        .modal-textarea {
+            width: 100%;
+            height: 100px;
+            background: #222;
+            border: 1px solid #444;
+            border-radius: 8px;
+            color: #fff;
+            padding: 10px;
+            font-size: 0.9rem;
+            outline: none;
+            resize: none;
+            margin-bottom: 12px;
+        }
+
+        .modal-btns {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-submit {
+            flex: 1;
+            background: #d4af37;
+            color: #000;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-close {
+            flex: 1;
+            background: #333;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 11px;
+            color: #888;
+            margin-top: 20px;
+            padding-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="animated-bg"></div>
+
+    <!-- SPLASH SCREEN (10-1 COUNTDOWN) -->
+    <div id="door-splash">
+        <div class="door door-left" id="door-left"></div>
+        <div class="door door-right" id="door-right"></div>
+
+        <div class="splash-content">
+            <div class="flag-box">
+                <div class="flag-stripe flag-blue"></div>
+                <div class="flag-red1"></div>
+                <div class="flag-stripe flag-white"></div>
+                <div class="flag-red2"></div>
+                <div class="flag-stripe flag-green"></div>
+            </div>
+            <div class="title-sub">O'ZBEKISTON RESPUBLIKASI</div>
+            <div class="title-main">ANDIJON VILOYATI ANDIJON SHAHAR<br>"MAYDON BOZOR" MFY</div>
+            <div class="num-fly" id="num-fly">10</div>
+        </div>
+    </div>
+
+    <!-- ASOSIY KONTENT -->
+    <div class="main-content" id="main-content">
+        
+        <!-- Sarlavha va Bayroq Card -->
+        <div class="card">
+            <div class="header-section">
+                <div class="flag-box" style="margin: 0 auto 10px auto;">
+                    <div class="flag-stripe flag-blue"></div>
+                    <div class="flag-red1"></div>
+                    <div class="flag-stripe flag-white"></div>
+                    <div class="flag-red2"></div>
+                    <div class="flag-stripe flag-green"></div>
+                </div>
+                <div class="title-sub" style="font-size: 0.75rem;">O'zbekiston Respublikasi</div>
+                <div class="header-title">"MAYDON BOZOR" MFY</div>
+                <div class="header-location">Andijon viloyati, Andijon shahri</div>
+            </div>
+        </div>
+
+        <!-- Murojaat Bo'limi -->
+        <div class="card">
+            <div style="font-weight: bold; color: #d4af37; margin-bottom: 12px; font-size: 1.05rem;">Mahalla Mas'ullariga Murojaat</div>
+            <div class="btn-grid">
+                <button class="action-btn" onclick="openModal('Mahalla raisi Mavluda')">
+                    <span>Mahalla raisi: Mavluda</span>
+                    <span>➔</span>
+                </button>
+                <button class="action-btn" onclick="openModal('Yoshlar yetakchisi Yahyobek Zulunov')">
+                    <span>Yoshlar yetakchisi: Yahyobek Zulunov</span>
+                    <span>➔</span>
+                </button>
+                <button class="action-btn" onclick="openModal('Xotin-qizlar faoli')">
+                    <span>Xotin-qizlar faoliga murojaat</span>
+                    <span>➔</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mahallalar va Ko'chalar Ro'yxati -->
+        <div class="card">
+            <div style="font-weight: bold; color: #d4af37; margin-bottom: 12px; font-size: 1.05rem;">Mahallalar va Ko'chalar Ro'yxati</div>
+            
+            <!-- Sunbula ko'chasi -->
+            <div class="street-block">
+                <div class="street-header" onclick="toggleStreet('sunbula')">
+                    <span>Sunbula ko'chasi</span>
+                    <span id="icon-sunbula">▼</span>
+                </div>
+                <div class="street-content" id="sunbula">
+                    <div class="house-item">
+                        <div class="house-name">Sunbula 10: Qobiljonov Xojiakbar</div>
+                        <div class="house-phone">Tel: +998906101976</div>
+                    </div>
+                    <div class="house-item">
+                        <div class="house-name">Sunbula 14: Muhammad Yusuf</div>
+                        <div class="house-phone">Tel: Telefon raqami mavjud emas</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Muazzam ko'chasi -->
+            <div class="street-block">
+                <div class="street-header" onclick="toggleStreet('muazzam')">
+                    <span>Muazzam ko'chasi</span>
+                    <span id="icon-muazzam">▼</span>
+                </div>
+                <div class="street-content" id="muazzam">
+                    <div class="house-item">
+                        <div class="house-name">Mahdum Azam 47: Mamatova Yoqutxon</div>
+                        <div class="house-phone">Uy manzili: 47-uy</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="footer-note">Siz uchun manfaatlik bo'lsa biz xursandmiz — Qobiljonov Xojiakbar</div>
+
+    </div>
+
+    <!-- MODAL OYNA -->
+    <div class="modal" id="appeal-modal">
+        <div class="modal-content">
+            <div class="modal-header" id="modal-target">Murojaat yuborish</div>
+            <div class="modal-info">Murojaatingizni yozing va platformada javobimizni bildirishnomada yuboramiz.</div>
+            <textarea class="modal-textarea" id="appeal-text" placeholder="Murojaat matnini shu yerga yozing..."></textarea>
+            <div class="modal-btns">
+                <button class="btn-submit" onclick="sendAppeal()">Yuborish</button>
+                <button class="btn-close" onclick="closeModal()">Yopish</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const doorLeft = document.getElementById('door-left');
+        const doorRight = document.getElementById('door-right');
+        const numFly = document.getElementById('num-fly');
+
+        // 1-soniyada eshiklar ochiladi
+        setTimeout(() => {
+            doorLeft.style.transform = 'translateX(-100%)';
+            doorRight.style.transform = 'translateX(100%)';
+        }, 100);
+
+        // 10 dan 1 gacha sanoq
+        let count = 10;
+        const numTimer = setInterval(() => {
+            count--;
+            if (count > 0) {
+                numFly.innerText = count;
+            } else {
+                clearInterval(numTimer);
+                document.getElementById('door-splash').style.display = 'none';
+                const mainContent = document.getElementById('main-content');
+                mainContent.classList.add('visible');
+            }
+        }, 1000);
+
+        // Ko'chalarni ochish/yopish
+        function toggleStreet(id) {
+            const el = document.getElementById(id);
+            const icon = document.getElementById('icon-' + id);
+            if (el.classList.contains('active')) {
+                el.classList.remove('active');
+                icon.innerText = '▼';
+            } else {
+                el.classList.add('active');
+                icon.innerText = '▲';
+            }
+        }
+
+        // Modal oyna funksiyalari
+        function openModal(target) {
+            document.getElementById('modal-target').innerText = target + " ga murojaat";
+            document.getElementById('appeal-text').value = '';
+            document.getElementById('appeal-modal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('appeal-modal').style.display = 'none';
+        }
+
+        function sendAppeal() {
+            const text = document.getElementById('appeal-text').value.trim();
+            if (!text) {
+                alert("Iltimos, murojaat matnini kiriting!");
+                return;
+            }
+            alert("Murojaatingiz qabul qilindi! Platformamizda javobimizni bildirishnomada yuboramiz.");
+            closeModal();
+        }
+    </script>
+</body>
+</html>
