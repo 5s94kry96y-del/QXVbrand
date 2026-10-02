@@ -1,1 +1,254 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QXVgram - Instagram Clone</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Ikonkalar -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .qxv-blue { color: #0095f6; }
+        .qxv-bg-blue { background-color: #0095f6; }
+        .qxv-bg-blue:hover { background-color: #1877f2; }
+        /* Scrollbar'ni yashirish */
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-thumb { background: #262626; border-radius: 4px; }
+    </style>
+</head>
+<body class="bg-black text-white h-screen flex overflow-hidden font-sans">
 
+    <!-- CHAP SIDEBAR (Navigatsiya menyusi) -->
+    <div class="w-20 md:w-64 border-r border-neutral-800 flex flex-col justify-between p-4 bg-black z-10">
+        <div>
+            <!-- Logo -->
+            <h1 class="text-xl font-bold tracking-wider qxv-blue hidden md:block mb-8 px-2 font-serif italic">QXVgram</h1>
+            <h1 class="text-xl font-bold qxv-blue md:hidden mb-8 text-center">QXV</h1>
+
+            <!-- Menyu elementlari -->
+            <nav class="space-y-2">
+                <button onclick="switchTab('home')" id="nav-home" class="w-full flex items-center space-x-4 p-3 rounded-xl hover:bg-neutral-900 transition text-white font-semibold">
+                    <i class="fa-solid fa-house text-xl w-6 text-center"></i>
+                    <span class="hidden md:inline">Asosiy</span>
+                </button>
+                <button onclick="switchTab('reels')" id="nav-reels" class="w-full flex items-center space-x-4 p-3 rounded-xl hover:bg-neutral-900 transition text-gray-400">
+                    <i class="fa-solid fa-clapperboard text-xl w-6 text-center"></i>
+                    <span class="hidden md:inline">Reels</span>
+                </button>
+                <button onclick="switchTab('messages')" id="nav-messages" class="w-full flex items-center space-x-4 p-3 rounded-xl hover:bg-neutral-900 transition text-gray-400">
+                    <i class="fa-regular fa-paper-plane text-xl w-6 text-center"></i>
+                    <span class="hidden md:inline">Xabarlar</span>
+                </button>
+                <button onclick="switchTab('profile')" id="nav-profile" class="w-full flex items-center space-x-4 p-3 rounded-xl hover:bg-neutral-900 transition text-gray-400">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100" class="w-6 h-6 rounded-full object-cover">
+                    <span class="hidden md:inline">Profil</span>
+                </button>
+            </nav>
+        </div>
+
+        <!-- Pastki qism -->
+        <div class="space-y-2">
+            <button class="w-full flex items-center space-x-4 p-3 rounded-xl hover:bg-neutral-900 transition text-gray-400">
+                <i class="fa-solid fa-bars text-xl w-6 text-center"></i>
+                <span class="hidden md:inline">Ko'proq</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- ASOSIY KONTENT QISMI -->
+    <div class="flex-1 h-full overflow-y-auto bg-black flex justify-center">
+        
+        <!-- 1. ASOSIY SAHIFA (Lenta va postlar) -->
+        <div id="tab-home" class="w-full max-w-xl py-8 px-4 space-y-6">
+            <!-- Stories -->
+            <div class="flex space-x-4 overflow-x-auto pb-2 scrollbar-none">
+                <div class="flex flex-col items-center space-y-1 cursor-pointer">
+                    <div class="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-yellow-500 to-fuchsia-600">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100" class="w-full h-full rounded-full object-cover border-2 border-black">
+                    </div>
+                    <span class="text-xs text-gray-300">Sizning hikoyangiz</span>
+                </div>
+                <div class="flex flex-col items-center space-y-1 cursor-pointer">
+                    <div class="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-yellow-500 to-fuchsia-600">
+                        <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100" class="w-full h-full rounded-full object-cover border-2 border-black">
+                    </div>
+                    <span class="text-xs text-gray-300">alisher_dev</span>
+                </div>
+                <div class="flex flex-col items-center space-y-1 cursor-pointer">
+                    <div class="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-yellow-500 to-fuchsia-600">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100" class="w-full h-full rounded-full object-cover border-2 border-black">
+                    </div>
+                    <span class="text-xs text-gray-300">madina_m</span>
+                </div>
+            </div>
+
+            <!-- Post 1 -->
+            <div class="border border-neutral-800 rounded-xl bg-neutral-950 overflow-hidden">
+                <div class="flex items-center justify-between p-3">
+                    <div class="flex items-center space-x-3">
+                        <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100" class="w-8 h-8 rounded-full object-cover">
+                        <span class="text-sm font-semibold">alisher_dev</span>
+                    </div>
+                    <i class="fa-solid fa-ellipsis text-gray-400 cursor-pointer"></i>
+                </div>
+                <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600" class="w-full object-cover max-h-[450px]">
+                <div class="p-3 space-y-2">
+                    <div class="flex justify-between text-xl">
+                        <div class="space-x-4">
+                            <i class="fa-regular fa-heart cursor-pointer hover:text-red-500 transition"></i>
+                            <i class="fa-regular fa-comment cursor-pointer"></i>
+                            <i class="fa-regular fa-paper-plane cursor-pointer"></i>
+                        </div>
+                        <i class="fa-regular fa-bookmark cursor-pointer"></i>
+                    </div>
+                    <p class="text-sm font-semibold">1,245 ta yoqtirish</p>
+                    <p class="text-sm"><span class="font-semibold mr-2">alisher_dev</span> QXVgram platformasini sinab ko'ryapmiz, zo'r chiqdi! 🚀</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. REELS QATORLARI (Video lentasi) -->
+        <div id="tab-reels" class="w-full max-w-md h-full hidden flex-col items-center justify-center p-4 space-y-4">
+            <!-- Reels Video Kartochkasi -->
+            <div class="relative w-full h-[80vh] bg-neutral-900 rounded-2xl overflow-hidden flex flex-col justify-end p-4 border border-neutral-800 shadow-2xl">
+                <!-- Fon rasmi yoki video simulyatsiyasi -->
+                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600" class="absolute inset-0 w-full h-full object-cover opacity-80">
+                <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+
+                <!-- O'ng tarafdagi tugmalar (Like, izoh, ulashish) -->
+                <div class="absolute right-4 bottom-16 flex flex-col items-center space-y-4 text-white z-10">
+                    <div class="flex flex-col items-center cursor-pointer">
+                        <i class="fa-solid fa-heart text-2xl text-red-500 mb-1"></i>
+                        <span class="text-xs">24.5K</span>
+                    </div>
+                    <div class="flex flex-col items-center cursor-pointer">
+                        <i class="fa-solid fa-comment text-2xl mb-1"></i>
+                        <span class="text-xs">1,420</span>
+                    </div>
+                    <div class="flex flex-col items-center cursor-pointer">
+                        <i class="fa-solid fa-share text-2xl mb-1"></i>
+                        <span class="text-xs">Ulashish</span>
+                    </div>
+                </div>
+
+                <!-- Pastdagi muallif va matn -->
+                <div class="z-10 space-y-2 pr-12">
+                    <div class="flex items-center space-x-2">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100" class="w-9 h-9 rounded-full object-cover border border-white">
+                        <span class="font-semibold text-sm">jasur_code</span>
+                        <button class="border border-white text-white text-xs px-3 py-1 rounded-lg font-semibold">Obuna bo'lish</button>
+                    </div>
+                    <p class="text-xs text-gray-200">Dasturlashni o'rganish osonroq bo'lyapti! 🔥 #coding #qxvgram</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. XABARLAR (Direct Chat sahifasi) -->
+        <div id="tab-messages" class="w-full h-full hidden flex">
+            <!-- Chap chatlar ro'yxati -->
+            <div class="w-full md:w-2/5 border-r border-neutral-800 flex flex-col h-full">
+                <div class="p-4 border-b border-neutral-800 flex justify-between items-center">
+                    <h2 class="font-bold text-lg">QXVuser</h2>
+                    <i class="fa-regular fa-pen-to-square text-lg cursor-pointer"></i>
+                </div>
+                <div class="flex-1 overflow-y-auto divide-y divide-neutral-900">
+                    <div onclick="selectChat('Alisher', 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100')" class="flex items-center p-3 hover:bg-neutral-900 cursor-pointer">
+                        <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100" class="w-12 h-12 rounded-full object-cover">
+                        <div class="ml-3">
+                            <h4 class="text-sm font-semibold">Alisher</h4>
+                            <p class="text-xs text-gray-400">Salom, QXVgram zo‘r chiqibdi!</p>
+                        </div>
+                    </div>
+                    <div onclick="selectChat('Madina', 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100')" class="flex items-center p-3 hover:bg-neutral-900 cursor-pointer">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100" class="w-12 h-12 rounded-full object-cover">
+                        <div class="ml-3">
+                            <h4 class="text-sm font-semibold">Madina</h4>
+                            <p class="text-xs text-gray-400">Loyihani qachon tugatamiz?</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- O'ng chat oynasi -->
+            <div class="hidden md:flex flex-col flex-1 h-full">
+                <div class="p-4 border-b border-neutral-800 flex items-center space-x-3">
+                    <img id="chatImg" src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100" class="w-10 h-10 rounded-full object-cover">
+                    <h3 id="chatName" class="font-semibold text-sm">Alisher</h3>
+                </div>
+                <div id="msgContainer" class="flex-1 p-4 overflow-y-auto space-y-3 flex flex-col">
+                    <div class="self-start bg-neutral-800 px-4 py-2 rounded-2xl text-sm max-w-xs">Salom!</div>
+                    <div class="self-end qxv-bg-blue px-4 py-2 rounded-2xl text-sm max-w-xs">Salom, QXVgram zo‘r chiqibdi!</div>
+                </div>
+                <div class="p-4 border-t border-neutral-800">
+                    <form onsubmit="sendMsg(event)" class="flex items-center bg-neutral-900 border border-neutral-800 rounded-full px-4 py-2">
+                        <input type="text" id="msgInput" placeholder="Xabar yozish..." class="flex-1 bg-transparent text-sm focus:outline-none text-white">
+                        <button type="submit" class="qxv-blue font-semibold text-sm ml-3">Yuborish</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. PROFIL SAHIFASI -->
+        <div id="tab-profile" class="w-full max-w-2xl h-full hidden p-6 space-y-6">
+            <div class="flex items-center space-x-8 pb-6 border-b border-neutral-800">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200" class="w-24 h-24 rounded-full object-cover">
+                <div class="space-y-3">
+                    <div class="flex items-center space-x-4">
+                        <h2 class="text-xl font-semibold">QXVuser</h2>
+                        <button class="bg-neutral-800 px-4 py-1.5 rounded-lg text-sm font-semibold hover:bg-neutral-700">Profilni tahrirlash</button>
+                    </div>
+                    <div class="flex space-x-6 text-sm text-gray-300">
+                        <span><b>3</b> ta post</span>
+                        <span><b>1,420</b> obunachi</span>
+                        <span><b>280</b> kuzatish</span>
+                    </div>
+                    <p class="text-sm">Fullstack Dasturchi 💻<br>QXVgram asoschisi 🚀</p>
+                </div>
+            </div>
+            <!-- Profil postlar paneli -->
+            <div class="grid grid-cols-3 gap-2">
+                <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=300" class="w-full h-40 object-cover rounded-md">
+                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=300" class="w-full h-40 object-cover rounded-md">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300" class="w-full h-40 object-cover rounded-md">
+            </div>
+        </div>
+
+    </div>
+
+    <!-- JavaScript Boshqaruvi -->
+    <script>
+        function switchTab(tabName) {
+            // Barcha tablarni yashirish
+            ['home', 'reels', 'messages', 'profile'].forEach(t => {
+                document.getElementById('tab-' + t).style.display = 'none';
+                document.getElementById('nav-' + t).className = 'w-full flex items-center space-x-4 p-3 rounded-xl hover:bg-neutral-900 transition text-gray-400';
+            });
+            // Tanlanganni ochish
+            document.getElementById('tab-' + tabName).style.display = 'flex';
+            document.getElementById('nav-' + tabName).className = 'w-full flex items-center space-x-4 p-3 rounded-xl hover:bg-neutral-900 transition text-white font-semibold';
+        }
+        // Dastlabki holat
+        switchTab('home');
+
+        function selectChat(name, img) {
+            document.getElementById('chatName').innerText = name;
+            document.getElementById('chatImg').src = img;
+        }
+
+        function sendMsg(e) {
+            e.preventDefault();
+            const input = document.getElementById('msgInput');
+            const container = document.getElementById('msgContainer');
+            if(!input.value.trim()) return;
+
+            const div = document.createElement('div');
+            div.className = 'self-end qxv-bg-blue px-4 py-2 rounded-2xl text-sm max-w-xs';
+            div.innerText = input.value;
+            container.appendChild(div);
+            input.value = '';
+            container.scrollTop = container.scrollHeight;
+        }
+    </script>
+</body>
+</html>
