@@ -1,584 +1,139 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QXV BRAND - Premium Islomiy Portal</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        }
-
-        body {
-            background: #050505;
-            color: #ffffff;
-            min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        /* Emotsional Qimirlovchi Orqa Fon Nur Effekti */
-        .animated-bg {
-            position: fixed;
-            top: -150px;
-            right: -150px;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(212, 175, 55, 0.35) 0%, rgba(0,0,0,0) 70%);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 1;
-            animation: pulseGlow 6s ease-in-out infinite alternate;
-        }
-
-        @keyframes pulseGlow {
-            0% { transform: scale(1) translate(0, 0); opacity: 0.6; }
-            50% { transform: scale(1.3) translate(-30px, 40px); opacity: 0.9; }
-            100% { transform: scale(1.1) translate(20px, -20px); opacity: 0.7; }
-        }
-
-        /* Dynamic Rain & Snow */
-        .rain-container, .snow-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 2;
-            overflow: hidden;
-        }
-
-        .drop {
-            position: absolute;
-            background: linear-gradient(transparent, rgba(212, 175, 55, 0.6));
-            width: 1.5px;
-            height: 40px;
-            opacity: 0.6;
-            animation: fall 0.8s linear infinite;
-        }
-
-        @keyframes fall {
-            0% { transform: translateY(-50px) rotate(10deg); }
-            100% { transform: translateY(100vh) rotate(10deg); }
-        }
-
-        .flake {
-            position: absolute;
-            background: #fff;
-            border-radius: 50%;
-            opacity: 0.8;
-            animation: snowfall 3s linear infinite;
-        }
-
-        @keyframes snowfall {
-            0% { transform: translateY(-10px) translateX(0); }
-            100% { transform: translateY(100vh) translateX(25px); }
-        }
-
-        /* SPLASH SCREEN & FAST DOOR (1 SONIYADA OCHILADI) */
-        #door-splash {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 9999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            background: #000;
-        }
-
-        .door {
-            position: absolute;
-            top: 0;
-            width: 50%;
-            height: 100%;
-            background: #080808;
-            border: 2px solid #d4af37;
-            box-shadow: inset 0 0 100px rgba(0,0,0,1);
-            transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1);
-            z-index: 10;
-        }
-
-        .door-left {
-            left: 0;
-            border-right: 1px solid #d4af37;
-            transform: translateX(0);
-        }
-
-        .door-right {
-            right: 0;
-            border-left: 1px solid #d4af37;
-            transform: translateX(0);
-        }
-
-        .splash-content {
-            position: relative;
-            z-index: 5;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 200px;
-        }
-
-        /* QXV va BRAND Almashtirish Konteyneri */
-        .title-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            position: relative;
-            height: 110px;
-            justify-content: center;
-        }
-
-        .text-qxv {
-            font-size: 3.8rem;
-            font-weight: 900;
-            letter-spacing: 6px;
-            background: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            position: absolute;
-            top: 0;
-        }
-
-        .text-brand {
-            font-size: 1.6rem;
-            font-weight: 700;
-            letter-spacing: 10px;
-            color: #d4af37;
-            transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            position: absolute;
-            top: 65px;
-        }
-
-        .title-container.swapped .text-qxv {
-            top: 55px;
-            font-size: 1.8rem;
-        }
-
-        .title-container.swapped .text-brand {
-            top: 0px;
-            font-size: 3.2rem;
-        }
-
-        .welcome-text {
-            font-size: 1.1rem;
-            color: #aaa;
-            margin-top: 10px;
-            letter-spacing: 3px;
-        }
-
-        .num-fly {
-            font-size: 4rem;
-            font-weight: bold;
-            color: #ffffff;
-            text-shadow: 0 0 20px #d4af37;
-            margin-top: 10px;
-        }
-
-        /* Asosiy Kontent */
-        .main-content {
-            position: relative;
-            z-index: 10;
-            max-width: 500px;
-            margin: 0 auto;
-            padding: 20px;
-            display: none;
-            opacity: 0;
-            transition: opacity 1.2s ease;
-        }
-
-        .main-content.visible {
-            display: block;
-            opacity: 1;
-        }
-
-        .card {
-            background: rgba(18, 18, 18, 0.85);
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            backdrop-filter: blur(10px);
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.7);
-        }
-
-        .brand-header {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: #d4af37;
-            text-align: center;
-        }
-
-        .live-clock {
-            text-align: center;
-            color: #aaa;
-            font-size: 0.9rem;
-            margin-top: 5px;
-            margin-bottom: 15px;
-        }
-
-        .audio-group {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .region-title {
-            font-size: 1.1rem;
-            color: #d4af37;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
-            padding-bottom: 5px;
-            margin-top: 15px;
-            margin-bottom: 10px;
-        }
-
-        .prayer-list {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .prayer-item {
-            display: flex;
-            justify-content: space-between;
-            background: rgba(30, 30, 30, 0.7);
-            padding: 10px 14px;
-            border-radius: 8px;
-            font-size: 0.95rem;
-        }
-
-        .prayer-time {
-            color: #d4af37;
-            font-weight: bold;
-        }
-
-        .action-btn {
-            background: linear-gradient(135deg, #bf953f, #aa820a);
-            color: #000;
-            border: none;
-            width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        .action-btn:active {
-            transform: scale(0.98);
-        }
-
-        .search-box {
-            display: flex;
-            gap: 8px;
-            margin-top: 10px;
-        }
-
-        .search-input {
-            flex: 1;
-            background: rgba(30, 30, 30, 0.9);
-            border: 1px solid #444;
-            color: #fff;
-            padding: 10px;
-            border-radius: 8px;
-            outline: none;
-        }
-
-        .meaning-result {
-            margin-top: 10px;
-            padding: 10px;
-            background: rgba(30, 30, 30, 0.5);
-            border-radius: 8px;
-            font-size: 0.9rem;
-            color: #ddd;
-        }
-
-        .learn-item {
-            background: rgba(30, 30, 30, 0.6);
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 8px;
-            border-left: 3px solid #d4af37;
-        }
-
-        .learn-title {
-            color: #d4af37;
-            font-weight: bold;
-            font-size: 0.95rem;
-        }
-
-        .footer-note {
-            text-align: right;
-            font-size: 10px;
-            color: #888;
-            margin-top: 20px;
-            padding-bottom: 20px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#080807">
+<meta name="description" content="QXV BRAND — kiyim-kechak, oyoq kiyim va mini printerlar onlayn do‘koni.">
+<title>QXV BRAND | Siz uchun eng yaxshisi</title>
+<style>
+:root{--bg:#090909;--panel:#15130e;--panel2:#201b10;--gold:#d9b45b;--gold2:#f9e5a2;--white:#fffaf0;--muted:#b8b1a0;--line:#554522;--green:#8ee2a0}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at top,#282012 0,#0b0a08 45%,#070707 100%);color:var(--white);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}body.no-scroll{overflow:hidden}button,input,textarea,select{font:inherit}button,a{-webkit-tap-highlight-color:transparent}a{color:inherit}.wrap{width:min(1160px,100%);margin:auto;padding:14px}.gold{color:var(--gold2)}.top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 0 17px}.brand{font-size:28px;font-weight:1000;letter-spacing:4px;color:var(--gold2);text-shadow:0 0 20px #d9b45b33}.brand small{display:block;text-align:center;font-size:9px;letter-spacing:6px;color:var(--gold);margin-top:-3px}.top-right{display:flex;align-items:center;gap:8px}.tag{font-size:11px;border:1px solid var(--line);padding:8px 10px;border-radius:99px;color:var(--gold2)}.iconbtn{border:1px solid var(--line);background:#18150e;color:var(--gold2);width:42px;height:42px;border-radius:13px;cursor:pointer;font-size:18px}.intro{position:fixed;inset:0;z-index:1000;background:radial-gradient(ellipse at 50% 30%,#493619,#100e09 50%,#050505);display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;transition:opacity .7s,visibility .7s}.intro.hide{opacity:0;visibility:hidden;pointer-events:none}.intro-inner{max-width:650px;animation:rise 1s ease both}.crown{font-size:44px;color:var(--gold2);filter:drop-shadow(0 0 16px #d9b45b88)}.intro h1{font-size:clamp(34px,8vw,68px);letter-spacing:5px;margin:10px 0;color:var(--gold2);text-shadow:0 0 25px #d9b45b55}.intro h2{font-size:clamp(19px,4vw,29px);font-weight:650;margin:10px 0}.intro p{color:#d7cdb5;line-height:1.7}.loader{height:3px;max-width:300px;background:#473a20;margin:25px auto;border-radius:9px;overflow:hidden}.loader span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),#fff1b7);animation:load 5s linear forwards}.count{color:var(--gold2);font-weight:900;font-size:14px;letter-spacing:2px}@keyframes load{to{width:100%}}@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.hero{position:relative;overflow:hidden;border:1px solid #765d2c;border-radius:25px;padding:28px 20px;background:linear-gradient(125deg,#211a0d,#0e0d0a 62%,#2c2110);box-shadow:0 22px 55px #0008}.hero:after{content:"QXV";position:absolute;right:-8px;bottom:-58px;font-size:clamp(110px,27vw,270px);font-weight:1000;letter-spacing:-8px;color:#d9b45b08;pointer-events:none}.eyebrow{font-size:11px;letter-spacing:3px;font-weight:850;color:var(--gold);text-transform:uppercase}.hero h1{position:relative;z-index:1;font-size:clamp(33px,7vw,62px);line-height:1.04;margin:14px 0 12px;max-width:750px}.hero p{position:relative;z-index:1;color:#d0c7b4;line-height:1.7;max-width:700px;font-size:14px}.btn{border:1px solid #e9ce82;border-radius:13px;padding:13px 16px;background:linear-gradient(135deg,#f7df98,#bd8d30);color:#1a1306;font-weight:900;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px}.btn.secondary{background:#19160f;border-color:#65502a;color:var(--gold2)}.btn.full{width:100%}.hero .btn{position:relative;z-index:1;width:100%;margin-top:9px;min-height:52px;box-shadow:0 7px 25px #d9b45b1c}.trust{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:20px;position:relative;z-index:1}.trust div{border:1px solid #4a3a1f;background:#110f0bba;padding:10px 7px;border-radius:12px;font-size:11px;text-align:center;color:#e8d9b4}.trust b{display:block;font-size:18px;margin-bottom:4px}.left-tools{position:fixed;left:9px;top:42%;z-index:40;display:flex;flex-direction:column;gap:9px}.tool{width:46px;height:46px;border-radius:14px;background:#15120c;border:1px solid #7a602c;color:var(--gold2);box-shadow:0 5px 20px #0008;cursor:pointer;font-size:19px}.tool span{display:none}.settings{position:fixed;left:64px;top:34%;z-index:50;width:min(290px,calc(100vw - 82px));background:#15120df5;border:1px solid #79602f;border-radius:18px;padding:15px;box-shadow:0 18px 50px #000b;display:none;backdrop-filter:blur(12px)}.settings.open{display:block}.settings h3{margin:0 0 12px;color:var(--gold2)}.settings button,.settings select{width:100%;margin:4px 0}.settings .btn{padding:10px}.sectionhead{display:flex;align-items:end;justify-content:space-between;gap:10px;margin:30px 0 14px}.sectionhead h2{margin:0;font-size:24px}.sectionhead p{margin:5px 0 0;color:var(--muted);font-size:12px}.counter{white-space:nowrap;border:1px solid var(--line);border-radius:99px;padding:8px 11px;color:var(--gold2);font-size:12px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.card{min-width:0;background:linear-gradient(155deg,#1a1710,#0f0e0b);border:1px solid #44371e;border-radius:17px;overflow:hidden;box-shadow:0 9px 24px #0003}.prodimg{display:block;width:100%;aspect-ratio:1/0.88;object-fit:cover;background:#282116}.pbody{padding:11px}.pbody h3{font-size:14px;margin:0 0 6px;line-height:1.35}.desc{font-size:11px;line-height:1.5;color:var(--muted);min-height:32px}.price{font-size:17px;color:var(--gold2);font-weight:950;margin:9px 0}.old{font-size:11px;color:#8c8473;text-decoration:line-through;margin-left:5px}.sizes{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0}.size{border:1px solid #54472b;border-radius:8px;background:#100f0b;color:#eee1c1;padding:6px 7px;font-size:11px;cursor:pointer}.size.selected{background:var(--gold2);color:#171006;border-color:var(--gold2);font-weight:900}.pbody .btn{width:100%;padding:10px 7px;font-size:12px}.category{margin-top:32px}.category .sectionhead{border-bottom:1px solid #3c3019;padding-bottom:12px}.categorylabel{color:var(--gold);font-size:10px;letter-spacing:2px}.note{padding:16px;border:1px solid #46391e;border-radius:15px;background:#12100c;color:#c9c0ad;font-size:12px;line-height:1.75;margin-top:22px}.checkout{margin-top:30px;border:1px solid #745b2a;background:linear-gradient(150deg,#1b170f,#0e0d0a);border-radius:22px;padding:17px}.checkout h2{margin:0 0 7px}.muted{color:var(--muted);font-size:12px;line-height:1.6}.cartitems{margin:15px 0}.cartrow{display:flex;justify-content:space-between;align-items:center;gap:10px;border-bottom:1px solid #3d321e;padding:11px 0;font-size:12px}.cartrow button{background:none;border:0;color:#ffb4a9;cursor:pointer}.total{text-align:right;font-weight:950;font-size:20px;color:var(--gold2);margin:16px 0}.formgrid{display:grid;grid-template-columns:1fr;gap:12px;margin-top:15px}label{display:block;font-size:12px;color:#d4c7a9;margin-bottom:6px}input,textarea,select{width:100%;border:1px solid #4b3c23;border-radius:11px;background:#090908;color:#fff8e7;padding:13px;outline:none}input:focus,textarea:focus,select:focus{border-color:var(--gold)}textarea{min-height:80px;resize:vertical}.formhint{font-size:10px;color:#a89d87;margin-top:5px}.toast{display:none;padding:13px;border-radius:12px;border:1px solid #547444;background:#172016;color:#d6ffd0;font-size:13px;line-height:1.6;margin-top:12px}.contactgrid{display:grid;grid-template-columns:1fr;gap:9px;margin-top:16px}.contact{display:block;text-decoration:none;text-align:center;padding:13px;border-radius:12px;border:1px solid #554421;background:#17130b;color:var(--gold2);font-size:13px;font-weight:800}.foot{text-align:center;color:#9b927e;font-size:11px;line-height:1.8;padding:28px 0 14px}.fx{position:fixed;inset:0;pointer-events:none;z-index:25;overflow:hidden;display:none}.fx.active{display:block}.particle{position:absolute;top:-30px;animation:fall linear infinite;opacity:.8;text-shadow:0 0 8px #e8d39a}.fx.rain .particle{color:#b7dfff;font-size:14px}.fx.snow .particle{color:#fff;font-size:18px}.fx.leaves .particle{color:#d6a43d;font-size:21px}@keyframes fall{to{transform:translate3d(var(--drift),110vh,0) rotate(480deg)}}.legal{font-size:10px;color:#9e957f;line-height:1.6;margin-top:10px}
+@media(min-width:680px){.wrap{padding:22px}.hero{padding:42px}.hero .btn{width:auto;min-width:330px}.grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.pbody{padding:14px}.pbody h3{font-size:16px}.desc{font-size:12px}.price{font-size:20px}.formgrid{grid-template-columns:1fr 1fr}.full{grid-column:1/-1}.contactgrid{grid-template-columns:repeat(3,1fr)}.left-tools{left:14px}.settings{left:70px}.intro p{font-size:16px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
 </head>
-<body>
-
-    <div class="animated-bg"></div>
-    <div class="rain-container" id="rain"></div>
-
-    <!-- SPLASH SCREEN -->
-    <div id="door-splash">
-        <div class="door door-left" id="door-left"></div>
-        <div class="door door-right" id="door-right"></div>
-        <div class="snow-container" id="splash-snow"></div>
-
-        <div class="splash-content">
-            <div class="title-container" id="title-box">
-                <div class="text-qxv">QXV</div>
-                <div class="text-brand">BRAND</div>
-            </div>
-            <div class="welcome-text">XUSH KELIBSIZ</div>
-            <div class="num-fly" id="num-fly">6</div>
-        </div>
-    </div>
-
-    <!-- ASOSIY KONTENT -->
-    <div class="main-content" id="main-content">
-        
-        <!-- Yuqori Al-Afasy Suralari -->
-        <div class="card">
-            <div class="brand-header">QXV BRAND</div>
-            <div class="live-clock" id="live-clock">Sana va Soat yuklanmoqda...</div>
-            
-            <div class="audio-group">
-                <button class="action-btn" style="background: linear-gradient(135deg, #11998e, #38ef7d); color:#fff;" onclick="playAudio('yasin-audio')">AL-AFASY: YASIN SURASI</button>
-                <button class="action-btn" style="background: linear-gradient(135deg, #4e54c8, #8f94fb); color:#fff;" onclick="playAudio('tabarak-audio')">AL-AFASY: TABORAK (MULK) SURASI</button>
-            </div>
-        </div>
-
-        <!-- Namoz Vaqtlari -->
-        <div class="card">
-            <div class="region-title">Andijon Viloyati Namoz Vaqtlari</div>
-            <div class="prayer-list">
-                <div class="prayer-item"><span>Bomdod</span><span class="prayer-time" id="and-Fajr">--:--</span></div>
-                <div class="prayer-item"><span>Peshin</span><span class="prayer-time" id="and-Dhuhr">--:--</span></div>
-                <div class="prayer-item"><span>Asr</span><span class="prayer-time" id="and-Asr">--:--</span></div>
-                <div class="prayer-item"><span>Shom</span><span class="prayer-time" id="and-Maghrib">--:--</span></div>
-                <div class="prayer-item"><span>Xufton</span><span class="prayer-time" id="and-Isha">--:--</span></div>
-            </div>
-
-            <div class="region-title">Toshkent Viloyati Namoz Vaqtlari</div>
-            <div class="prayer-list">
-                <div class="prayer-item"><span>Bomdod</span><span class="prayer-time" id="tash-Fajr">--:--</span></div>
-                <div class="prayer-item"><span>Peshin</span><span class="prayer-time" id="tash-Dhuhr">--:--</span></div>
-                <div class="prayer-item"><span>Asr</span><span class="prayer-time" id="tash-Asr">--:--</span></div>
-                <div class="prayer-item"><span>Shom</span><span class="prayer-time" id="tash-Maghrib">--:--</span></div>
-                <div class="prayer-item"><span>Xufton</span><span class="prayer-time" id="tash-Isha">--:--</span></div>
-            </div>
-        </div>
-
-        <!-- Namoz O'rganish -->
-        <div class="card">
-            <div style="font-weight: bold; color: #d4af37; margin-bottom: 12px; text-align: center;">Namoz O'qishni O'rganish (Rakatlar Tartibi)</div>
-            
-            <div class="learn-item">
-                <div class="learn-title">Bomdod Namozi (4 Rakat)</div>
-                <div style="font-size: 0.85rem; color: #ccc;">2 rakat Sunnat, 2 rakat Farz.</div>
-            </div>
-            <div class="learn-item">
-                <div class="learn-title">Peshin Namozi (10 Rakat)</div>
-                <div style="font-size: 0.85rem; color: #ccc;">4 rakat Sunnat, 4 rakat Farz, 2 rakat Sunnat.</div>
-            </div>
-            <div class="learn-item">
-                <div class="learn-title">Asr Namozi (4 Rakat)</div>
-                <div style="font-size: 0.85rem; color: #ccc;">4 rakat Farz.</div>
-            </div>
-            <div class="learn-item">
-                <div class="learn-title">Shom Namozi (5 Rakat)</div>
-                <div style="font-size: 0.85rem; color: #ccc;">3 rakat Farz, 2 rakat Sunnat.</div>
-            </div>
-            <div class="learn-item">
-                <div class="learn-title">Xufton Namozi (9 Rakat)</div>
-                <div style="font-size: 0.85rem; color: #ccc;">4 rakat Farz, 2 rakat Sunnat, 3 rakat Vitr Vajib.</div>
-            </div>
-        </div>
-
-        <!-- Ismlar Ma'nosi -->
-        <div class="card">
-            <div style="font-weight: bold; color: #d4af37; margin-bottom: 8px;">Ismlar Ma'nosi Lug'ati</div>
-            <div class="search-box">
-                <input type="text" id="name-input" class="search-input" placeholder="Ism kiriting (masalan: Muhammadimron)">
-                <button class="action-btn" style="width: auto;" onclick="searchName()">Izlash</button>
-            </div>
-            <div class="meaning-result" id="meaning-output">Ism ma'nosini bilish uchun qidiruvdan foydalaning.</div>
-        </div>
-
-        <!-- Eng Pastki Nasheedlar -->
-        <div class="card">
-            <div style="font-weight: bold; color: #d4af37; margin-bottom: 12px; text-align: center;">Sara Nasheedlar</div>
-            <div class="audio-group">
-                <button class="action-btn" style="background: linear-gradient(135deg, #d4af37, #f39c12); color:#000;" onclick="playAudio('fiyahubbun-audio')">NASHEED: FIYA HUBBUN</button>
-                <button class="action-btn" style="background: linear-gradient(135deg, #eb3b5a, #fa8231); color:#fff;" onclick="playAudio('allahuyalamu-audio')">NASHEED: ALLAHU YA'LAMU</button>
-            </div>
-        </div>
-
-        <div class="footer-note">Siz uchun manfaatlik bo'lsa biz xursandmiz — Qobiljonov Xojiakbar</div>
-
-    </div>
-
-    <!-- AUDIO MANBALARI -->
-    <audio id="yasin-audio" src="https://server8.mp3quran.net/afs/036.mp3" preload="auto"></audio>
-    <audio id="tabarak-audio" src="https://server8.mp3quran.net/afs/067.mp3" preload="auto"></audio>
-
-    <!--
-      NASHEED FAYLLARI: Loyihangiz joylashgan papkaga ushbu 2 ta faylni yuklab qo'ysangiz 100% kafolat bilan chaladi:
-      1. fi_yahubbun.mp3
-      2. allahu_yalamu.mp3
-    -->
-    <audio id="fiyahubbun-audio" src="fi_yahubbun.mp3" preload="auto"></audio>
-    <audio id="allahuyalamu-audio" src="allahu_yalamu.mp3" preload="auto"></audio>
-
-    <script>
-        const doorLeft = document.getElementById('door-left');
-        const doorRight = document.getElementById('door-right');
-        const numFly = document.getElementById('num-fly');
-        const titleBox = document.getElementById('title-box');
-
-        // 1 soniya ichida qora eshiklar tezda ochiladi
-        setTimeout(() => {
-            doorLeft.style.transform = 'translateX(-100%)';
-            doorRight.style.transform = 'translateX(100%)';
-        }, 100);
-
-        // Aniq 6 soniyalik sanoq
-        let count = 6;
-        const numTimer = setInterval(() => {
-            count--;
-            
-            // 3 soniya qolganda QXV va BRAND o'rin almashtiradi
-            if (count === 3) {
-                titleBox.classList.add('swapped');
-            }
-
-            if (count > 0) {
-                numFly.innerText = count;
-            } else {
-                clearInterval(numTimer);
-                document.getElementById('door-splash').style.display = 'none';
-                const mainContent = document.getElementById('main-content');
-                mainContent.classList.add('visible');
-            }
-        }, 1000);
-
-        // Qor generatori
-        const splashSnow = document.getElementById('splash-snow');
-        for (let i = 0; i < 35; i++) {
-            const flake = document.createElement('div');
-            flake.className = 'flake';
-            flake.style.width = Math.random() * 5 + 2 + 'px';
-            flake.style.height = flake.style.width;
-            flake.style.left = Math.random() * 100 + 'vw';
-            flake.style.animationDuration = (2 + Math.random() * 3) + 's';
-            splashSnow.appendChild(flake);
-        }
-
-        // Yomg'ir generatori
-        const rainContainer = document.getElementById('rain');
-        for (let i = 0; i < 40; i++) {
-            const drop = document.createElement('div');
-            drop.className = 'drop';
-            drop.style.left = Math.random() * 100 + 'vw';
-            drop.style.animationDuration = (0.6 + Math.random() * 0.4) + 's';
-            rainContainer.appendChild(drop);
-        }
-
-        // Real Vaqt
-        function updateClock() {
-            const now = new Date();
-            const days = ['Yakshanba', 'Dushanba', 'Seshanba', 'Chorshanba', 'Payshanba', 'Juma', 'Shanba'];
-            const dayName = days[now.getDay()];
-            const dateStr = now.toLocaleDateString('uz-UZ');
-            const timeStr = now.toLocaleTimeString('uz-UZ');
-            document.getElementById('live-clock').innerText = `${dateStr} (${dayName}) - ${timeStr}`;
-        }
-        setInterval(updateClock, 1000);
-        updateClock();
-
-        // Namoz Vaqtlari API
-        async function loadTimes() {
-            try {
-                // Andijon
-                const resA = await fetch('https://api.aladhan.com/v1/timingsByCity?city=Andijan&country=Uzbekistan&method=3');
-                const dataA = await resA.json();
-                const tA = dataA.data.timings;
-                document.getElementById('and-Fajr').innerText = tA.Fajr;
-                document.getElementById('and-Dhuhr').innerText = tA.Dhuhr;
-                document.getElementById('and-Asr').innerText = tA.Asr;
-                document.getElementById('and-Maghrib').innerText = tA.Maghrib;
-                document.getElementById('and-Isha').innerText = tA.Isha;
-
-                // Toshkent
-                const resT = await fetch('https://api.aladhan.com/v1/timingsByCity?city=Tashkent&country=Uzbekistan&method=3');
-                const dataT = await resT.json();
-                const tT = dataT.data.timings;
-                document.getElementById('tash-Fajr').innerText = tT.Fajr;
-                document.getElementById('tash-Dhuhr').innerText = tT.Dhuhr;
-                document.getElementById('tash-Asr').innerText = tT.Asr;
-                document.getElementById('tash-Maghrib').innerText = tT.Maghrib;
-                document.getElementById('tash-Isha').innerText = tT.Isha;
-            } catch (e) {
-                console.log(e);
-            }
-        }
-        loadTimes();
-
-        // Audio Player (Biri chalinganda boshqalari to'xtaydi)
-        function playAudio(id) {
-            const audios = ['yasin-audio', 'tabarak-audio', 'fiyahubbun-audio', 'allahuyalamu-audio'];
-            audios.forEach(aId => {
-                const el = document.getElementById(aId);
-                if (aId === id) {
-                    el.play();
-                } else {
-                    el.pause();
-                    el.currentTime = 0;
-                }
-            });
-        }
-
-        // Ismlar lug'ati
-        const namesDb = {
-            "muhammad": "Maqtovga loyiq, ulug'langan. Payg'ambarimiz (s.a.v.) ismi.",
-            "muhammadrasul": "Muhammad — Allohning elchisi va payg'ambari degan ma'noni bildiradi.",
-            "muhammadimron": "Muhammad (maqtovli) hamda Imron (obodlik, bunyodkorlik) ismlari birikmasi.",
-            "imron": "Obod etuvchi, uzoq umr ko'ruvchi, bunyodkor.",
-            "ilyos": "Alloh mening Tangrimdir. Ilyos payg'ambar ismi.",
-            "sabr": "Chidamli, matonatli va og'ir-bosiq kishi.",
-            "ali": "Yuksak, martabasi baland, oliy va qudratli."
-        };
-
-        function searchName() {
-            const val = document.getElementById('name-input').value.trim().toLowerCase();
-            const out = document.getElementById('meaning-output');
-
-            if (!val) {
-                out.innerText = "Iltimos, ism kiriting.";
-                return;
-            }
-
-            if (namesDb[val]) {
-                out.innerText = `${val.toUpperCase()}: ${namesDb[val]}`;
-            } else {
-                out.innerText = `"${val}" ismi lug'atdan topilmadi. Boshqa ism kiritib ko'ring.`;
-            }
-        }
-    </script>
+<body class="no-scroll">
+<div class="fx" id="fx" aria-hidden="true"></div>
+<div class="intro" id="intro">
+ <div class="intro-inner">
+  <div class="crown">♛</div>
+  <div class="eyebrow">PREMIUM SHOPPING EXPERIENCE</div>
+  <h1>QXV BRAND</h1>
+  <h2 id="introGreeting">Assalomu alaykum!</h2>
+  <p id="introThanks">Bizni tanlaganingizdan mamnunmiz.<br>Siz uchun eng yaxshi mahsulotlarimizni tanlayapmiz…</p>
+  <div class="loader"><span></span></div>
+  <div class="count"><span id="count">5</span> <span id="seconds">soniyadan so‘ng kirish</span></div>
+ </div>
+</div>
+<div class="left-tools">
+ <button class="tool" title="Instagram" aria-label="Instagram" onclick="window.open('https://instagram.com/qxv_brand','_blank')">◎</button>
+ <button class="tool" title="Telegram" aria-label="Telegram" onclick="window.open('https://t.me/qxv_brand','_blank')">➤</button>
+ <button class="tool" title="Sozlamalar" aria-label="Sozlamalar" onclick="toggleSettings()">⚙</button>
+</div>
+<aside class="settings" id="settings">
+ <h3 id="settingsTitle">⚙ Sozlamalar</h3>
+ <label for="language" id="langLabel">Tilni tanlang</label>
+ <select id="language" onchange="setLanguage(this.value)">
+  <option value="uz">O‘zbekcha (lotin)</option><option value="uzc">Ўзбекча (кирилл)</option><option value="en">English</option><option value="ru">Русский</option>
+ </select>
+ <button class="btn secondary" onclick="setEffect('rain')" id="rainBtn">🌧 Yomg‘ir</button>
+ <button class="btn secondary" onclick="setEffect('snow')" id="snowBtn">❄ Qor</button>
+ <button class="btn secondary" onclick="setEffect('leaves')" id="leafBtn">🍂 Kuz barglari</button>
+ <button class="btn secondary" onclick="setEffect('off')" id="offBtn">✕ Effektni o‘chirish</button>
+ <button class="btn secondary" onclick="toggleSettings()" id="closeSettings">Yopish</button>
+ <p class="legal">Yagona admin: <a href="https://t.me/qxv_admin" target="_blank" rel="noopener">@qxv_admin</a> — murojaat qiling.</p>
+</aside>
+<div class="wrap">
+<header class="top"><div class="brand">QXV<small>BRAND</small></div><div class="top-right"><span class="tag" id="topTag">SIZ UCHUN ENG YAXSHISI</span><button class="iconbtn" onclick="document.getElementById('zakaz').scrollIntoView({behavior:'smooth'})" aria-label="Savat">🛒<span id="topCart">0</span></button></div></header>
+<section class="hero">
+ <div class="eyebrow">♛ QXV BRAND • PREMIUM COLLECTION</div>
+ <h1 id="heroTitle">Uslubingiz — sizning imzoingiz.</h1>
+ <p id="heroText">Oyoq kiyimlar, kiyim-kechak va foydali qurilmalar bir joyda. Mahsulotni tanlang, razmerni belgilang va buyurtmangizni qulay tarzda yuboring.</p>
+ <a href="#mahsulotlar" class="btn" id="orderTop">🛍 ZAKAZ BERISH UCHUN USTIGA BOSING</a>
+ <div class="trust"><div><b>✦</b><span id="trust1">Uslubli tanlov</span></div><div><b>♧</b><span id="trust2">Qulay buyurtma</span></div><div><b>⌂</b><span id="trust3">Yetkazish kelishiladi</span></div></div>
+</section>
+<section class="category" id="mahsulotlar">
+ <div class="sectionhead"><div><div class="categorylabel">01 / FOOTWEAR</div><h2 id="shoesTitle">👟 Oyoq kiyimlar</h2><p id="shoesDesc">Har bir model uchun razmerni alohida tanlang.</p></div><span class="counter" id="cartCount">Savat: 0</span></div>
+ <div class="grid" id="shoesGrid"></div>
+</section>
+<section class="category">
+ <div class="sectionhead"><div><div class="categorylabel">02 / CLOTHING</div><h2 id="clothesTitle">👕 Kiyim-kechak</h2><p id="clothesDesc">Kundalik va sport uslubidagi tanlovlar.</p></div></div>
+ <div class="grid" id="clothesGrid"></div>
+</section>
+<section class="category">
+ <div class="sectionhead"><div><div class="categorylabel">03 / GADGETS</div><h2 id="gadgetsTitle">🖨 Mini printerlar</h2><p id="gadgetsDesc">Ixcham va qulay qurilmalar.</p></div></div>
+ <div class="grid" id="gadgetsGrid"></div>
+</section>
+<div class="note" id="deliveryNote">🚚 <b style="color:var(--gold2)">Yetkazib berish:</b> buyurtma tasdiqlangandan so‘ng odatda 12–72 soat ichida. Viloyat va manzilga qarab muddat o‘zgarishi mumkin. Aniq vaqt operator tomonidan tasdiqlanadi.<br>☎️ <b style="color:var(--gold2)">Call center:</b> <a href="tel:+998906101976">+998 90 610 19 76</a></div>
+<section class="checkout" id="zakaz">
+ <h2 id="checkoutTitle">🛒 Buyurtmangiz</h2><p class="muted" id="checkoutDesc">Savatni tekshiring va ma’lumotlaringizni kiriting. Operator buyurtmani tasdiqlash uchun siz bilan bog‘lanadi.</p>
+ <div class="cartitems" id="cartItems"><p class="muted" id="emptyCart">Savat hozircha bo‘sh. Mahsulot tanlang.</p></div>
+ <div class="total" id="total">Jami: 0 so‘m</div>
+ <form id="orderForm">
+  <div class="formgrid">
+   <div><label for="customerName" id="nameLabel">Ism-familiya *</label><input id="customerName" name="name" autocomplete="name" required placeholder="Ismingiz"></div>
+   <div><label for="customerPhone" id="phoneLabel">Telefon raqami *</label><input id="customerPhone" name="phone" type="tel" autocomplete="tel" required placeholder="+998 90 123 45 67" pattern="[+0-9() -]{9,20}"></div>
+   <div class="full"><label for="customerAddress" id="addressLabel">Yetkazib berish manzili *</label><textarea id="customerAddress" name="address" autocomplete="street-address" required placeholder="Viloyat, shahar/tuman, ko‘cha, uy"></textarea></div>
+   <div><label for="payment" id="paymentLabel">To‘lov usuli</label><select id="payment" name="payment"><option value="Operator bilan kelishiladi">Operator bilan kelishiladi</option><option value="Karta orqali — rekvizit operator tomonidan yuboriladi">Karta orqali</option><option value="Naqd pul — operator bilan kelishiladi">Naqd pul</option></select></div>
+   <div><label for="comment" id="commentLabel">Izoh (ixtiyoriy)</label><input id="comment" name="comment" placeholder="Rang yoki qo‘shimcha talab"></div>
+  </div>
+  <button class="btn full" type="submit" id="submitBtn">✅ BUYURTMA BERISH</button>
+  <p class="legal" id="privacyNote">Ma’lumotlaringiz buyurtmani ko‘rib chiqish va siz bilan bog‘lanish uchun ishlatiladi. To‘lov kartasi ma’lumotlarini ushbu formaga kiritmang.</p>
+ </form>
+ <div class="toast" id="toast" role="status"></div>
+ <div class="contactgrid">
+  <a class="contact" href="tel:+998906101976">☎️ <span id="callLabel">Call center</span><br>+998 90 610 19 76</a>
+  <a class="contact" href="https://t.me/qxv_brand" target="_blank" rel="noopener">✈️ Telegram<br>@qxv_brand</a>
+  <a class="contact" href="https://instagram.com/qxv_brand" target="_blank" rel="noopener">◎ Instagram<br>@qxv_brand</a>
+ </div>
+ <p class="legal">Yagona admin: <a href="https://t.me/qxv_admin" target="_blank" rel="noopener">@qxv_admin</a> — murojaat qiling.</p>
+</section>
+<footer class="foot">♛ QXV BRAND<br><span id="footerLine">Siz uchun eng yaxshisi.</span><br>© 2026 QXV BRAND</footer>
+</div>
+<script>
+/* MUHIM SOZLASH:
+   Telegramga avtomatik buyurtma yuborish uchun BACKEND_URL ni o‘zingizning serverless endpoint manzilingizga almashtiring.
+   Bot tokenini HTML ichiga yozmang: saytning hamma mehmonlari uni ko‘rib olishi mumkin.
+   Rasmlar va narxlar namunaviy. Sotuvga qo‘yishdan oldin haqiqiy mahsulot, narx va razmer mavjudligini tekshiring.
+*/
+const BACKEND_URL = "";
+const products = [
+ {id:"s1",cat:"shoes",name:"QXV Street Runner",desc:"Kundalik kiyish uchun zamonaviy sport uslubi.",price:149000,sizes:["39","40","41","42","43","44"],image:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&q=85"},
+ {id:"s2",cat:"shoes",name:"QXV Urban White",desc:"Minimal dizayn, turli obrazlarga mos.",price:169000,sizes:["40","41","42","43","44"],image:"https://images.unsplash.com/photo-1495555961986-6d4c1ecb7be3?auto=format&fit=crop&w=900&q=85"},
+ {id:"s3",cat:"shoes",name:"QXV Classic Black",desc:"Klassik ko‘rinishdagi kundalik oyoq kiyim.",price:189000,sizes:["40","41","42","43","44"],image:"https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=900&q=85"},
+ {id:"s4",cat:"shoes",name:"QXV Sport Flex",desc:"Faol kunlar uchun sportcha model.",price:199000,sizes:["39","40","41","42","43","44"],image:"https://images.unsplash.com/photo-1460353581641-37b1e9d4f7b5?auto=format&fit=crop&w=900&q=85"},
+ {id:"c1",cat:"clothes",name:"QXV Basic T-shirt",desc:"Oddiy, qulay kundalik futbolka.",price:79000,sizes:["S","M","L","XL"],image:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=900&q=85"},
+ {id:"c2",cat:"clothes",name:"QXV Urban Hoodie",desc:"Salqin ob-havo uchun kundalik huddi.",price:179000,sizes:["S","M","L","XL"],image:"https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=900&q=85"},
+ {id:"c3",cat:"clothes",name:"QXV Everyday Jacket",desc:"Ko‘p obrazlarga mos ustki kiyim.",price:249000,sizes:["M","L","XL","XXL"],image:"https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=900&q=85"},
+ {id:"g1",cat:"gadgets",name:"QXV Mini Printer",desc:"Ixcham termal printer; telefon bilan mosligini tekshiring.",price:299000,sizes:["Standart"],image:"https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=85"},
+ {id:"g2",cat:"gadgets",name:"QXV Pocket Printer Kit",desc:"Cho‘ntak printeri uchun namunaviy to‘plam.",price:349000,sizes:["Standart"],image:"https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=900&q=85"}
+];
+const cart=[];
+const translations={
+ uz:{greeting:"Assalomu alaykum!",thanks:"Bizni tanlaganingizdan mamnunmiz.<br>Siz uchun eng yaxshi mahsulotlarimizni tanlayapmiz…",seconds:"soniyadan so‘ng kirish",settings:"⚙ Sozlamalar",lang:"Tilni tanlang",rain:"🌧 Yomg‘ir",snow:"❄ Qor",leaves:"🍂 Kuz barglari",off:"✕ Effektni o‘chirish",close:"Yopish",top:"SIZ UCHUN ENG YAXSHISI",hero:"Uslubingiz — sizning imzoingiz.",heroText:"Oyoq kiyimlar, kiyim-kechak va foydali qurilmalar bir joyda. Mahsulotni tanlang, razmerni belgilang va buyurtmangizni qulay tarzda yuboring.",order:"🛍 ZAKAZ BERISH UCHUN USTIGA BOSING",trust:["Uslubli tanlov","Qulay buyurtma","Yetkazish kelishiladi"],shoes:"👟 Oyoq kiyimlar",shoesDesc:"Har bir model uchun razmerni alohida tanlang.",clothes:"👕 Kiyim-kechak",clothesDesc:"Kundalik va sport uslubidagi tanlovlar.",gadgets:"🖨 Mini printerlar",gadgetsDesc:"Ixcham va qulay qurilmalar.",checkout:"🛒 Buyurtmangiz",checkoutDesc:"Savatni tekshiring va ma’lumotlaringizni kiriting. Operator buyurtmani tasdiqlash uchun siz bilan bog‘lanadi.",empty:"Savat hozircha bo‘sh. Mahsulot tanlang.",name:"Ism-familiya *",phone:"Telefon raqami *",address:"Yetkazib berish manzili *",payment:"To‘lov usuli",comment:"Izoh (ixtiyoriy)",submit:"✅ BUYURTMA BERISH",privacy:"Ma’lumotlaringiz buyurtmani ko‘rib chiqish va siz bilan bog‘lanish uchun ishlatiladi. To‘lov kartasi ma’lumotlarini ushbu formaga kiritmang.",call:"Call center",footer:"Siz uchun eng yaxshisi.",add:"Savatga qo‘shish",choose:"Iltimos, avval razmerni tanlang.",remove:"O‘chirish ✕",cart:"Savat",total:"Jami",received:"Buyurtmangiz qabul qilindi! Bizni tanlaganingiz uchun tashakkur. Buyurtma 12–72 soat ichida yetkazilishi mumkin; viloyatga qarab muddat o‘zgaradi. Tez orada siz bilan aloqaga chiqamiz.",notConnected:"Buyurtma matni nusxalandi, lekin Telegram botga avtomatik yuborish hali ulanmagan. Matnni Telegramga qo‘lda yuborishingiz mumkin.",emptyOrder:"Buyurtma berishdan oldin savatga mahsulot qo‘shing.",failed:"Buyurtmani yuborib bo‘lmadi. Internet yoki server sozlamasini tekshiring yoki call center’ga qo‘ng‘iroq qiling."},
+ uzc:{greeting:"Ассалому алайкум!",thanks:"Бизни танлаганингиздан мамнунмиз.<br>Сиз учун энг яхши маҳсулотларимизни танлаяпмиз…",seconds:"сониядан сўнг кириш",settings:"⚙ Созламалар",lang:"Тилни танланг",rain:"🌧 Ёмғир",snow:"❄ Қор",leaves:"🍂 Куз барглари",off:"✕ Эффектни ўчириш",close:"Ёпиш",top:"СИЗ УЧУН ЭНГ ЯХШИСИ",hero:"Услубингиз — сизнинг имзонгиз.",heroText:"Оёқ кийимлар, кийим-кечак ва фойдали қурилмалар бир жойда. Маҳсулотни танланг ва буюртма юборинг.",order:"🛍 БУЮРТМА БЕРИШ УЧУН БОСИНГ",trust:["Услубли танлов","Қулай буюртма","Етказиш келишилади"],shoes:"👟 Оёқ кийимлар",shoesDesc:"Ҳар бир модель учун размерни танланг.",clothes:"👕 Кийим-кечак",clothesDesc:"Кундалик ва спорт услубидаги танловлар.",gadgets:"🖨 Мини принтерлар",gadgetsDesc:"Ихчам ва қулай қурилмалар.",checkout:"🛒 Буюртмангиз",checkoutDesc:"Саватни текширинг ва маълумотларни киритинг.",empty:"Сават ҳозирча бўш. Маҳсулот танланг.",name:"Исми-шариф *",phone:"Телефон рақами *",address:"Етказиб бериш манзили *",payment:"Тўлов усули",comment:"Изоҳ (ихтиёрий)",submit:"✅ БУЮРТМА БЕРИШ",privacy:"Маълумотларингиз буюртма ва алоқа учун ишлатилади. Карта маълумотларини формага киритманг.",call:"Call center",footer:"Сиз учун энг яхшиси.",add:"Саватга қўшиш",choose:"Аввал размерни танланг.",remove:"Ўчириш ✕",cart:"Сават",total:"Жами",received:"Буюртмангиз қабул қилинди! Бизни танлаганингиз учун раҳмат. Етказиш 12–72 соат оралиғида бўлиши мумкин, вилоятга қараб ўзгаради. Тез орада сиз билан боғланамиз.",notConnected:"Буюртма матни нусхаланди, аммо Telegram автоматик уланмаган.",emptyOrder:"Аввал саватга маҳсулот қўшинг.",failed:"Буюртма юборилмади. Интернетни текширинг ёки call center’га қўнғироқ қилинг."},
+ en:{greeting:"Hello and welcome!",thanks:"We’re glad you chose us.<br>We’re selecting the best products for you…",seconds:"seconds until entry",settings:"⚙ Settings",lang:"Choose language",rain:"🌧 Rain",snow:"❄ Snow",leaves:"🍂 Autumn leaves",off:"✕ Turn effects off",close:"Close",top:"THE BEST FOR YOU",hero:"Your style. Your signature.",heroText:"Shoes, clothing and useful gadgets in one place. Choose a product and size, then submit your order.",order:"🛍 TAP HERE TO ORDER",trust:["Curated styles","Easy ordering","Delivery confirmed with you"],shoes:"👟 Shoes",shoesDesc:"Choose a size for each model.",clothes:"👕 Clothing",clothesDesc:"Everyday and sportswear styles.",gadgets:"🖨 Mini printers",gadgetsDesc:"Compact and handy devices.",checkout:"🛒 Your order",checkoutDesc:"Review your cart and enter your details. Our operator will contact you to confirm.",empty:"Your cart is empty. Choose a product.",name:"Full name *",phone:"Phone number *",address:"Delivery address *",payment:"Payment method",comment:"Note (optional)",submit:"✅ PLACE ORDER",privacy:"Your details are used to process your order and contact you. Do not enter payment card details here.",call:"Call center",footer:"The best for you.",add:"Add to cart",choose:"Please select a size first.",remove:"Remove ✕",cart:"Cart",total:"Total",received:"Your order has been received! Thank you for choosing us. Delivery may take 12–72 hours depending on your region. We’ll contact you soon.",notConnected:"Order text copied, but automatic Telegram delivery is not connected yet.",emptyOrder:"Add a product to your cart first.",failed:"Could not send the order. Check your connection or call the support number."},
+ ru:{greeting:"Здравствуйте!",thanks:"Рады, что вы выбрали нас.<br>Подбираем для вас лучшие товары…",seconds:"секунд до входа",settings:"⚙ Настройки",lang:"Выберите язык",rain:"🌧 Дождь",snow:"❄ Снег",leaves:"🍂 Осенние листья",off:"✕ Выключить эффекты",close:"Закрыть",top:"ЛУЧШЕЕ ДЛЯ ВАС",hero:"Ваш стиль — ваша подпись.",heroText:"Обувь, одежда и полезные устройства в одном месте. Выберите товар и размер, затем оформите заказ.",order:"🛍 НАЖМИТЕ, ЧТОБЫ ЗАКАЗАТЬ",trust:["Подборка стилей","Удобный заказ","Доставка уточняется"],shoes:"👟 Обувь",shoesDesc:"Выберите размер для каждой модели.",clothes:"👕 Одежда",clothesDesc:"Повседневные и спортивные модели.",gadgets:"🖨 Мини-принтеры",gadgetsDesc:"Компактные и удобные устройства.",checkout:"🛒 Ваш заказ",checkoutDesc:"Проверьте корзину и заполните данные. Оператор свяжется с вами для подтверждения.",empty:"Корзина пока пуста. Выберите товар.",name:"Имя и фамилия *",phone:"Номер телефона *",address:"Адрес доставки *",payment:"Способ оплаты",comment:"Комментарий (необязательно)",submit:"✅ ОФОРМИТЬ ЗАКАЗ",privacy:"Данные нужны для обработки заказа и связи с вами. Не вводите здесь данные банковской карты.",call:"Колл-центр",footer:"Лучшее для вас.",add:"В корзину",choose:"Сначала выберите размер.",remove:"Удалить ✕",cart:"Корзина",total:"Итого",received:"Ваш заказ принят! Спасибо, что выбрали нас. Доставка может занять 12–72 часа в зависимости от региона. Скоро мы с вами свяжемся.",notConnected:"Текст заказа скопирован, но автоматическая отправка в Telegram ещё не подключена.",emptyOrder:"Сначала добавьте товар в корзину.",failed:"Не удалось отправить заказ. Проверьте интернет или позвоните в колл-центр."}
+};
+let lang="uz",selectedSizes={};
+const money=n=>new Intl.NumberFormat(lang==="ru"?"ru-RU":"uz-UZ").format(n)+(lang==="ru"?" сум":" so‘m");
+function t(k){return (translations[lang]||translations.uz)[k]||translations.uz[k]||k}
+function renderProducts(cat,elId){const list=products.filter(p=>p.cat===cat);document.getElementById(elId).innerHTML=list.map(p=>`<article class="card"><img class="prodimg" src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.style.display='none'"><div class="pbody"><h3>${p.name}</h3><div class="desc">${p.desc}</div><div class="price">${money(p.price)}</div><div class="muted" style="font-size:10px"> ${cat==="gadgets"?"Variant:":"Razmer / o‘lcham:"}</div><div class="sizes">${p.sizes.map(s=>`<button type="button" class="size ${selectedSizes[p.id]===s?"selected":""}" onclick="selectSize('${p.id}','${s}',this)">${s}</button>`).join("")}</div><button type="button" class="btn" onclick="addToCart('${p.id}')">${t("add")}</button></div></article>`).join("")}
+function selectSize(id,size,btn){selectedSizes[id]=size;btn.parentElement.querySelectorAll(".size").forEach(b=>b.classList.remove("selected"));btn.classList.add("selected")}
+function addToCart(id){const p=products.find(x=>x.id===id),size=selectedSizes[id];if(!size){alert(t("choose"));return}cart.push({id:p.id,name:p.name,price:p.price,size});renderCart();document.getElementById("zakaz").scrollIntoView({behavior:"smooth",block:"start"})}
+function removeFromCart(i){cart.splice(i,1);renderCart()}
+function renderCart(){document.getElementById("cartCount").textContent=t("cart")+": "+cart.length;document.getElementById("topCart").textContent=cart.length;document.getElementById("cartItems").innerHTML=cart.length?cart.map((x,i)=>`<div class="cartrow"><span><b>${x.name}</b><br><span class="muted">O‘lcham: ${x.size}</span><br>${money(x.price)}</span><button type="button" onclick="removeFromCart(${i})">${t("remove")}</button></div>`).join(""):`<p class="muted">${t("empty")}</p>`;document.getElementById("total").textContent=t("total")+": "+money(cart.reduce((s,x)=>s+x.price,0))}
+function setLanguage(value){lang=value;document.documentElement.lang=value==="uzc"?"uz":value;const d=translations[value]||translations.uz;
+const map={introGreeting:"greeting",introThanks:"thanks",seconds:"seconds",settingsTitle:"settings",langLabel:"lang",rainBtn:"rain",snowBtn:"snow",leafBtn:"leaves",offBtn:"off",closeSettings:"close",topTag:"top",heroTitle:"hero",heroText:"heroText",orderTop:"order",shoesTitle:"shoes",shoesDesc:"shoesDesc",clothesTitle:"clothes",clothesDesc:"clothesDesc",gadgetsTitle:"gadgets",gadgetsDesc:"gadgetsDesc",checkoutTitle:"checkout",checkoutDesc:"checkoutDesc",emptyCart:"empty",nameLabel:"name",phoneLabel:"phone",addressLabel:"address",paymentLabel:"payment",commentLabel:"comment",submitBtn:"submit",privacyNote:"privacy",callLabel:"call",footerLine:"footer"};Object.entries(map).forEach(([id,key])=>{const el=document.getElementById(id);if(el)el.innerHTML=d[key]||""});document.querySelectorAll(".trust span").forEach((el,i)=>el.textContent=d.trust[i]);document.querySelector("#payment option:nth-child(1)").textContent=value==="ru"?"Согласовать с оператором":value==="en"?"Confirm with operator":value==="uzc"?"Оператор билан келишилади":"Operator bilan kelishiladi";document.querySelector("#payment option:nth-child(2)").textContent=value==="ru"?"Картой — реквизиты предоставит оператор":value==="en"?"Card — details provided by operator":value==="uzc"?"Карта орқали":"Karta orqali";document.querySelector("#payment option:nth-child(3)").textContent=value==="ru"?"Наличными — согласовать с оператором":value==="en"?"Cash — confirm with operator":value==="uzc"?"Нақд пул":"Naqd pul";renderProducts("shoes","shoesGrid");renderProducts("clothes","clothesGrid");renderProducts("gadgets","gadgetsGrid");renderCart()}
+function toggleSettings(){document.getElementById("settings").classList.toggle("open")}
+function setEffect(kind){const fx=document.getElementById("fx");fx.className="fx";fx.innerHTML="";if(kind==="off")return;fx.classList.add("active",kind);const chars=kind==="rain"?["╱","╲","·"]:kind==="snow"?["❄","❅","✧"]:["🍂","🍁","✦"];for(let i=0;i<36;i++){const s=document.createElement("span");s.className="particle";s.textContent=chars[Math.floor(Math.random()*chars.length)];s.style.left=Math.random()*100+"%";s.style.animationDuration=(5+Math.random()*9)+"s";s.style.animationDelay=(-Math.random()*12)+"s";s.style.setProperty("--drift",(Math.random()*120-60)+"px");fx.appendChild(s)}}
+document.getElementById("orderForm").addEventListener("submit",async e=>{e.preventDefault();if(!cart.length){alert(t("emptyOrder"));return}const fd=new FormData(e.target);const order={brand:"QXV BRAND",createdAt:new Date().toISOString(),items:cart.map(x=>({...x})),total:cart.reduce((s,x)=>s+x.price,0),customer:{name:String(fd.get("name")).trim(),phone:String(fd.get("phone")).trim(),address:String(fd.get("address")).trim(),payment:fd.get("payment"),comment:String(fd.get("comment")||"").trim()}};const textOrder=`🛍 YANGI BUYURTMA — QXV BRAND\n${order.items.map((x,i)=>`${i+1}. ${x.name} | o‘lcham: ${x.size} | ${money(x.price)}`).join("\n")}\nJAMI: ${money(order.total)}\n\n👤 Ism: ${order.customer.name}\n📞 Telefon: ${order.customer.phone}\n📍 Manzil: ${order.customer.address}\n💳 To‘lov: ${order.customer.payment}\n📝 Izoh: ${order.customer.comment||"yo‘q"}`;const toast=document.getElementById("toast");
+if(!BACKEND_URL){try{await navigator.clipboard.writeText(textOrder);toast.textContent=t("notConnected")+"\n\n"+t("received")+"\n\n"+textOrder}catch(_){toast.textContent=t("notConnected")+"\n\n"+textOrder}toast.style.display="block";return}
+const btn=document.getElementById("submitBtn");btn.disabled=true;btn.textContent="…";try{const res=await fetch(BACKEND_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(order)});if(!res.ok)throw new Error("send failed");toast.textContent=t("received");toast.style.display="block";cart.length=0;renderCart();e.target.reset()}catch(err){toast.textContent=t("failed")+" +998 90 610 19 76";toast.style.display="block"}finally{btn.disabled=false;btn.textContent=t("submit")}});
+renderProducts("shoes","shoesGrid");renderProducts("clothes","clothesGrid");renderProducts("gadgets","gadgetsGrid");renderCart();
+let remaining=5;document.getElementById("count").textContent=remaining;const timer=setInterval(()=>{remaining--;document.getElementById("count").textContent=Math.max(0,remaining);if(remaining<=0){clearInterval(timer);document.getElementById("intro").classList.add("hide");document.body.classList.remove("no-scroll")}},1000);
+</script>
 </body>
 </html>
